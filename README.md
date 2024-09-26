@@ -20,3 +20,5 @@ this is code
 need to sync desktop version and web version 
 
 download r markdown
+
+can just work directly on web
