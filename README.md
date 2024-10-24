@@ -2,9 +2,6 @@
 ## radsex stuff 
 
 List:
-- my
-- name
-- jeff
 
 [google](www.google.com) 
 
