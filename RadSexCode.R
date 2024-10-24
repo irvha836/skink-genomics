@@ -2,12 +2,16 @@
 #install.packages("devtools")
 #devtools::install_github("SexGenomicsToolkit/sgtr")
 
+#code for plotting heat map
 library(sgtr)
 
 input_file= "distribution.tsv"
 
 radsex_distrib(input_file=input_file, groups =c("M", "F"))
 
+
+
+#code for plotting bootstrap distributions
 inputfile= "500radsexbootsrap.txt"
 
 hist(500radsexbootstrap.txt")
