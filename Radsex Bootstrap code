@@ -27,3 +27,31 @@ awk '{sum += $1} END {print sum}' temponlym.txt > malesum.txt
     paste femalesum.txt malesum.txt >> $outfile
     #rm tempsex.txt temponlyf.txt temponlym.txt tempdistrib.txt # Remove table
 done
+
+
+
+
+
+#Bootstrap code to check grep is working by obtaining markers in non biased sex regions of the distribution
+#nbootstraps=5
+file_sample="popmapbaldefg.tsv"
+outfile="5radsexbootstrap.txt"
+#radsex process --input-dir ./samples --output-file markers_table.tsv --threads 10 --min-depth 1
+rm $outfile
+for i in {1..5}
+do
+    echo $i
+    #shuffle table
+    cut -f 1 $file_sample | shuf | paste -d "\t"  - $file_sample  | cut -f 1,3 > tempsex.txt
+    radsex distrib --markers-table markers_table.tsv --output-file tempdistrib.txt     --popmap tempsex.txt --min-depth 1 --groups M,F
+     grep -E "^8\s+8"  tempdistrib.txt | cut -f 3 > temponlyf.txt
+awk '{sum += $1} END {print sum}' temponlyf.txt > femalesum.txt
+     grep -E "^8\s+8"  tempdistrib.txt  | cut -f 3 > temponlym.txt
+awk '{sum += $1} END {print sum}' temponlym.txt > malesum.txt
+    paste femalesum.txt malesum.txt >> $outfile
+    #rm tempsex.txt temponlyf.txt temponlym.txt tempdistrib.txt # Remove table
+done
+
+
+
+
