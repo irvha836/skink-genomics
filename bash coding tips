@@ -1,0 +1,60 @@
+#useful commands for bash 
+tab to autocomplete 
+q is to quit files 
+control c is to quit a command line 
+Module spider = search module
+
+# 'pwd' is get directory 
+# 'cd _directory name__' is change directory 
+# 'cd' takes you home 
+# 'cd ~' takes you home 
+# 'cd ..' is go back up a directory level
+# if you want to directly go to a file within a file do cd _first directory/second directory file/3rd if you want direct path 
+
+#'ls' lets you look in your directory and tells you where you are 
+#'ls -F' tells you what each form of directory is @= a shortcut / is a directory 
+# 'Ls -l' gives long form of file locations etc 
+# 'Ls-a' shows all files in a directory 
+# 'Ls ..' tells you directory above 
+# 'Ls *fastq' or 'Ls *7*.fastq' tells you which files have a 7 within their name as * is a wildcard
+
+# “man” and then any code you run can tell you about it in more detail 
+# “Head __File name___” allows you to look into first file samples in the file are read in 4s
+# “Tail __file name___” allows you to look at the last 4 samples
+# “Head -n” allows you to change how many lines you see in your file)
+# “Cat” _filename_ also just shows you the entire file 
+# “Less _filename_” lets you scroll through the file without dumping it on ur terminal 
+
+# “Cp _filename_” then _filename_copy.fastq” of what you want to call the file. copys teh file 
+
+# 'Mkdir _directoryname_' makes a directory
+# 'Rmdir _directoryname_' removes a directory 
+
+# 'Wc __filename __' tells you number of lines number of words number of characters 
+
+# 'Wc -l __filename__' tells you the n of lines 
+
+# 'Wc-l *.fastq' tells you wc of all files as again * is a wildcard 
+
+# 'Grep' allows you to find stuff within a file 
+#e.g Grep NNNNN filename 
+# "Grep -B1"  =1 line before or "A2" = 2 lines after within the file 
+
+# '|' allows you to join commands and redirect stuff 
+# '>' means your command is incomplete so can complete the line or just press control c 
+# '>' is also used to move 
+
+When you do this you ned to make. Fresh file 
+
+“For” is a loop 
+
+For __filename in *.fastq
+> do 
+>head -n 2 ${filename} >> seq_info.txt 
+>done 
+
+Need ${} as it isn’t a word its a variable 
+
+Echo file: ${filename} splits up lines of text in bootstrap code 
+
+At end of a bootstrap do rm - I seq_info.txt
