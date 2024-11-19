@@ -1,1 +1,15 @@
 SNPcalling
+
+
+
+do tar 
+
+to move a directory mv (directory name) ~/directory/ 
+
+set up snp calling 
+by bam sam bcf and vcf but put results/ infront of each 
+samtools view is to change format 
+samtools sort is to change order 
+
+
+grep -v '^#' the ^ means look for rows which start with a hastag the -v means ignore the ones which start with the #
