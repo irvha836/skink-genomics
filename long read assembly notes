@@ -1,0 +1,159 @@
+greater the busco score the more complete capture your genome has 
+
+repeat landscape plots look cool
+
+GATK is gold standard snp calling 
+
+breaker 3 pipeline good for genome annoation  
+
+repeats hinder completeness as cant know true order of a bunch of similar short reads therefore long reads are a way to overcome this 
+
+link for genome assembly code https://otagobioinformaticsspringschool.github.io/long-read-assembly/pages/2_familiarise_w_data/
+
+
+
+#cleaning data using cut adapts which cuts addapters was for pacbio data 
+fast qc can also help you identify the adapter 
+
+#for nanopore you dont remove adaptors but you only want to keep long reads 
+module load SeqKit/2.4.0
+seqkit seq \
+    -m 50000 \
+    ont_ul_5k_reads.fq.gz \
+    | pigz > ont_ul_5k_reads.50kb.fq.gz &
+
+#this code checks if it purged the short reads
+NanoComp --fastq \
+    ont_ul_5k_reads.fq.gz \
+    ont_ul_5k_reads.50kb.fq.gz \
+    --names ONT_UL ONT_UL_50kb \
+    --outdir nanocomp_ul_vs_ul_50kb
+
+#then check you didnt remove too many reads and how much data you lost to see if it make sense do this by checking the report 
+
+#phasing notes 
+#need to know which base goes from paternal or maternal 
+#high c also allows you to infer structure of genome 
+
+#kmers are just differnent read frames kmers are actually the key part of genome assembly 
+kmer read code 
+meryl count \
+    compress \
+    k=30 \
+    threads=2 \
+    memory=8 \
+    HG003_HiSeq30x_05M_reads_R1.fastq.gz \
+    output paternal_05M_compress.k30.meryl
+
+
+
+#make verkoo assembly directory 
+cd ~/obss_2024/genome_assembly
+mkdir -p assembly/verkko_test
+cd assembly/verkko_test
+
+
+sbatch means submit 
+squeue --me allows you to see what you are running 
+
+#n50 is the number of contigs needed required to cover half the genome 
+l50 is the n of contigs you have within half the genome 
+
+
+gfastats is used to run stats on your genome 
+
+
+gff is a feature file 
+
+history of genome assembly lesson 
+ 1  2024-11-17 15:55:36 ls
+    2  2024-11-17 15:55:49 ls ~/.config/rstudio_on_nesi/
+    3  2024-11-17 15:55:55 ln -s /nesi/project/nesi02659/obss_2024/users/$USER ~/obss_2024
+    4  2024-11-17 15:55:55 module load JupyterLab
+    5  2024-11-17 15:56:00 pip freeze | grep rstudio_on_nesi
+    6  2024-11-17 15:56:01 mkdir -p /home/$USER/rstudio_tmp
+    7  2024-11-17 15:56:01 echo "TMPDIR=/home/"$USER"/rstudio_tmp" > .Renviron
+    8  2024-11-17 15:56:01 mkdir -p ~/.config/rstudio_on_nesi/
+    9  2024-11-17 15:56:02 echo "module load R-bundle-Bioconductor/3.15-gimkl-2022a-R-4.2.1" > ~/.config/rstudio_on_nesi/prelude.bash
+   10  2024-11-17 15:56:04 ls -la
+   11  2024-11-17 15:56:07 exit
+   12  2024-11-20 13:03:12 cd ~/obss_2024/genome_assembly
+   13  2024-11-20 13:03:12 mkdir -p assembly/verkko_test
+   14  2024-11-20 13:03:13 cd assembly/verkko_test
+   15  2024-11-20 13:03:51 curl -L https://obj.umiacs.umd.edu/sergek/shared/ecoli_hifi_subset24x.fastq.gz -o hifi.fastq.gz
+   16  2024-11-20 13:04:02 curl -L https://obj.umiacs.umd.edu/sergek/shared/ecoli_ont_subset50x.fastq.gz -o ont.fastq.gz
+   17  2024-11-20 13:09:34 nano verkko_test.sl
+   18  2024-11-20 13:19:30 sbatch verkko_test.sl 
+   19  2024-11-20 13:19:42 squeue --me
+   20  2024-11-20 13:21:44 ls
+   21  2024-11-20 13:22:05 ls slurmlogs/
+   22  2024-11-20 13:28:23 ls assembly/
+   23  2024-11-20 13:30:27 cat assembly/snakemake.sh
+   24  2024-11-20 13:31:41 less assembly/.snakemake/log/*.log
+   25  2024-11-20 13:44:00 cd ~/obss_2024/genome_assembly/
+   26  2024-11-20 13:44:02 ls
+   27  2024-11-20 13:44:25 cd assembly_qc/gfastats
+   28  2024-11-20 13:44:40 module purge
+   29  2024-11-20 13:44:49 module load gfastats
+   30  2024-11-20 13:45:39 gfastats assembly.haplotype1.fasta
+   31  2024-11-20 13:51:14 gfastats --discover-paths unitig-normal-connected-tip.gfa 
+   32  2024-11-20 13:54:07 cp ../../assembly/verko_test/verko_test.sl gfa_run.sl
+   33  2024-11-20 13:54:53 cp ../../assembly/verkko_test/verkko_test.sl gfa_run.sl
+   34  2024-11-20 13:56:53 nano gfa_run.sl 
+   35  2024-11-20 14:00:01 sbatch gfa_run.sl 
+   36  2024-11-20 14:00:14 squeue --me
+   37  2024-11-20 14:01:40 ls
+   38  2024-11-20 14:01:54 less slurmlogs/test_gfa.51909111.
+   39  2024-11-20 14:02:24 squeue --me
+   40  2024-11-20 14:02:42 less slurmlogs/test_gfa.51909111.
+   41  2024-11-20 14:02:56 less slurmlogs/test_gfa.51909111.log
+   42  2024-11-20 14:04:08 nano gfa_run.sl 
+   43  2024-11-20 14:07:22 cd ~/obss_2024/genome_assembly/assembly_qc/
+   44  2024-11-20 14:07:22 ls
+   45  2024-11-20 14:07:34 mkdir merqury
+   46  2024-11-20 14:07:38 cd merqury/
+   47  2024-11-20 14:07:41 ls
+   48  2024-11-20 14:09:34 ln -s ~/obss_2024/genome_assembly/assembly/verkko_test/assembly/assembly.fasta .
+   49  2024-11-20 14:10:06 ln -s ~/obss_2024/genome_assembly/assembly/verkko_test/hifi.fastq.gz .
+   50  2024-11-20 14:10:08 ls
+   51  2024-11-20 14:12:33 meryl count k=30 memory=4 threads=2 hifi.fastq.gz output read-db.meryl
+   52  2024-11-20 14:12:57 module load Merqury
+   53  2024-11-20 14:13:03 meryl
+   54  2024-11-20 14:13:10 meryl count k=30 memory=4 threads=2 hifi.fastq.gz output read-db.meryl
+   55  2024-11-20 14:14:53 meryl histogram read-db.meryl > read-db.hist
+   56  2024-11-20 14:14:54 head -n 100 read-db.hist
+   57  2024-11-20 14:18:07 http://genomescope.org/genomescope2.0/
+   58  2024-11-20 14:52:29 cd ~/obss_2024/genome_assembly/
+   59  2024-11-20 14:52:29 mkdir -p cleanup/fcs/
+   60  2024-11-20 14:52:50 cd cleanup/fcs/
+   61  2024-11-20 14:53:43 curl -LO https://github.com/ncbi/fcs/raw/main/dist/fcs.py
+   62  2024-11-20 14:53:45 curl -LO https://github.com/ncbi/fcs/raw/main/examples/fcsgx_test.fa.gz
+   63  2024-11-20 14:54:10 ls
+   64  2024-11-20 14:54:47 module purge 
+   65  2024-11-20 14:54:56 module purge
+   66  2024-11-20 14:54:57 module load Python/3.8.2-gimkl-2020a
+   67  2024-11-20 14:55:00 module load Singularity/3.11.3
+   68  2024-11-20 14:55:00 export FCS_DEFAULT_IMAGE=/opt/nesi/containers/fcs/fcs-gx-0.4.0.sif
+   69  2024-11-20 14:56:31 python3 ./fcs.py     screen genome     --fasta ./fcsgx_test.fa.gz     --out-dir ./gx_out     --gx-db test-only      --tax-id 6973
+   70  2024-11-20 15:01:31 curl -LO https://github.com/ncbi/fcs/raw/main/dist/fcs.py
+   71  2024-11-20 15:01:32 # this was the last commit that had this file in the repo
+   72  2024-11-20 15:01:32 curl -LO https://github.com/ncbi/fcs/blob/b8814cbc2458ab0e7d16533d5fdec1c1dccae420/examples/fcsgx_test.fa.gz
+   73  2024-11-20 15:01:46 module purge
+   74  2024-11-20 15:01:47 module load Python/3.8.2-gimkl-2020a
+   75  2024-11-20 15:01:50 module load Apptainer/1.2.5
+   76  2024-11-20 15:01:54 export FCS_DEFAULT_IMAGE=/opt/nesi/containers/fcs/fcs-gx-0.5.4.sif
+   77  2024-11-20 15:02:12 python3 ./fcs.py     screen genome     --fasta ./fcsgx_test.fa.gz     --out-dir ./gx_out     --gx-db test-only      --tax-id 6973
+   78  2024-11-20 15:05:16 python3 ./fcs.py     screen genome     --fasta ./fcsgx_test.fa.gz     --out-dir ./gx_out     --gx-db test-only  \
+   79  2024-11-20 15:05:31 module purge
+   80  2024-11-20 15:05:32 module load Python/3.8.2-gimkl-2020a
+   81  2024-11-20 15:05:35 module load Apptainer/1.2.5
+   82  2024-11-20 15:05:35 export FCS_DEFAULT_IMAGE=/opt/nesi/containers/fcs/fcs-gx-0.5.4.sif
+   83  2024-11-20 15:05:43 python3 ./fcs.py     screen genome     --fasta ./fcsgx_test.fa.gz     --out-dir ./gx_out     --gx-db test-only      --tax-id 6973
+   84  2024-11-20 15:13:44 cd ~/obss_2024/genome_assembly/
+   85  2024-11-20 15:13:45 cd liftoff-annotation
+   86  2024-11-20 15:14:22 nano liftoff.sh
+   87  2024-11-20 15:20:11 ln -s /nesi/nobackup/nesi02659/LRA/resources/liftoff/asm.hap1.annotations.gff .
+   88  2024-11-20 15:20:22 ls
+   89  2024-11-20 15:21:24 less asm.hap1.annotations.gff 
+   90  2024-11-20 15:22:00 less -S asm.hap1.annotations.gff
+   91  2024-11-20 15:22:58 wc -l asm.hap1.annotations.gff 
