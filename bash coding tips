@@ -75,7 +75,9 @@ grep FAIL _filename_ allows you to look out what files failed
 #"\" means ignore the enter and just keep writing code 
 
 
+module spider allows you to search for modules 
 
+awk allows you to modify files in
 
 SLIDINGWINDOW:4:20 tells the trimmer to move to where you find this metric 
 
