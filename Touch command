@@ -1,0 +1,2 @@
+cd /nesi/nobackup/uooXXXXX # adapt for yourself
+find . -type f -exec touch {} + # will update all the files as if they were modified just now
