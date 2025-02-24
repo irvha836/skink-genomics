@@ -1,0 +1,10 @@
+# **Demultiplexing**
+
+zcat SQ2251_HMGN2DRX3_s_1_fastq.txt.gz  | head -n 1000000 > test_smallS1.fastq
+zcat SQ2251_HMGN2DRX3_s_2_fastq.txt.gz| head -n 1000000 > test_smallS2.fastq
+
+
+trimmed_SQ2252_HMGKKDRX3_s_1_fastq.fastq | head -n 1000000 > test_smallS1.fastq
+trimmed_SQ2252_HMGKKDRX3_s_2_fastq.fastq | head -n 1000000 > test_smallS2.fastq
+trimmed_SQ2252_HMGN2DRX3_s_1_fastq.fastq | head -n 1000000 > test_smallS3.fastq
+trimmed_SQ2252_HMGN2DRX3_s_2_fastq.fastq | head -n 1000000 > test_smallS4.fastq
