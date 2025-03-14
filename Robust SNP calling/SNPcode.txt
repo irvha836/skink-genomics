@@ -44,5 +44,21 @@ cutadapt -j 8 -a CCGAGATCGGAAGAGC -q 25 -o SQ2252_HMGN2DRX3_s_2_trimmed.fastq.gz
 # Bases preceding removed adapters:
 #  A: 20.8%  C: 30.8% G: 26.0%  T: 22.1%  none/other: 0.3%
 
+# Demultiplexing
+# already have barcode.txt
+mkdir raw samples 
+# makes a raw and a samples directory
+cd raw 
+ln -s ../SQ2252_HMGN2DRX3_s_1_trimmed.fastq.gz .
+ln -s ../SQ2252_HMGN2DRX3_s_2_trimmed.fastq.gz .
+ln -s ../SQ2252_HMGKKDRX3_s_1_trimmed.fastq.gz .
+ln -s ../SQ2252_HMGKKDRX3_s_2_trimmed.fastq.gz .
+cd ..
+# moves files into raw directory then comes out of raw directory 
+
+module load Stacks
+
+# Step 4: Run `process_radtags` to filter and demultiplex the RADSeq data
+process_radtags -p raw/ -o ./samples/ -b barcodes.txt -e pstI -c -q --inline_null -r
 
 
