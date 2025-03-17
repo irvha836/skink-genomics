@@ -61,4 +61,7 @@ module load Stacks
 # Step 4: Run `process_radtags` to filter and demultiplex the RADSeq data
 process_radtags -p raw/ -o ./samples/ -b barcodes.txt -e pstI -c -q --inline_null -r
 
+# create popmap file with my barcodes
+awk '{print $1"\tpop"}' barcodes.txt > popmap.txt
+
 
