@@ -1,7 +1,7 @@
 # get to Correct Directory
 cd popgen 
 
-# Quality check all 4 of the fastq files by generating test small files.
+# Quality check all 4 of the fastq files by generating test small files. (zcat decompresses gz files)
 zcat SQ2252_HMGKKDRX3_s_1_fastq.txt.gz | head -n 1000000 > test_small_KK_S1.fastq
 zcat SQ2252_HMGKKDRX3_s_2_fastq.txt.gz | head -n 1000000 > test_small_KK_S2.fastq
 zcat SQ2252_HMGN2DRX3_s_1_fastq.txt.gz | head -n 1000000 > test_small_N2_S1.fastq
@@ -64,4 +64,31 @@ process_radtags -p raw/ -o ./samples/ -b barcodes.txt -e pstI -c -q --inline_nul
 # create popmap file with my barcodes
 awk '{print $1"\tpop"}' barcodes.txt > popmap.txt
 
+# submit job for SNP calling using r80 method M = specificity of the 
+for i in 2 
+do 
+    mkdir -p M$i
+    echo '#!/bin/sh' > runM$i.sh
+    echo "module load Stacks/2.61-gimkl-2022a" >> runM$i.sh
+    echo "denovo_map.pl --samples samples/ --popmap popmap.txt -o M$i -M $i -n $i -m 3 -T 16" >> runM$i.sh
+    sbatch -A uoo04250 -t 20:00:00 -J M$i -c 16 --mem=64G runM$i.sh
+done
+
+
+for i in 2 
+do mkdir -p M$i; echo '#!/bin/sh' > runM$i.sh
+echo "module load Stacks/2.61-gimkl-2022a" >> runM$i.sh
+echo "denovo_map.pl --samples samples/ --popmap popmap.txt  -o M$i  -M $i -n $i -m 3 -T 16" >> runM$i.sh
+sbatch -A uoo00116 -t 20:00:00 -J M$i -c 16 --mem=64G  runM$i.sh
+done
+
+# allows to test for m parameter of 3 5 and 7 see which is the best fit 
+for i in 3 5 7 
+do 
+    mkdir -p M$i
+    echo '#!/bin/sh' > runM$i.sh
+    echo "module load Stacks/2.61-gimkl-2022a" >> runM$i.sh
+    echo "denovo_map.pl --samples samples/ --popmap popmap.txt -o M$i -M $i -n $i -m 3 -T 16" >> runM$i.sh
+    sbatch -A uoo04250 -t 20:00:00 -J M$i -c 16 --mem=64G runM$i.sh
+done
 
