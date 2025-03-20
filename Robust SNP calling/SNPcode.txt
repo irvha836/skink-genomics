@@ -108,7 +108,9 @@ done
 # The stack depth parameter (-m) controls the number of raw reads required to form a stack, and the mismatch parameter (-M) specifies the number of allowed nucleotide mismatches between two stacks to merge them into a locus.
 
 
-
+ 
+# move files around mv then directory they are in /*trimmed to new directory samples/ 
+mv raw/*.fastq.gz samples/
 
 
 
