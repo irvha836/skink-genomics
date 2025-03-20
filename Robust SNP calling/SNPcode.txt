@@ -13,7 +13,7 @@ fastqc test_small_*.fastq
 
 # Find lots of adapters present after 42 bases. by looking at atadper content 
 # Find Lots of overrepresented sequences 
-# Find majnority of reads are around 101bp by looking at sequence length Distribution - so can set short read cut off at around 50 so wont lose data.
+# Find majority of reads are around 101bp by looking at sequence length Distribution - so can set short read cut off at around 50 so wont lose data.
 
 # Trimming adapters and short reads 
 module load cutadapt
@@ -54,7 +54,13 @@ ln -s ../SQ2252_HMGN2DRX3_s_2_trimmed.fastq.gz .
 ln -s ../SQ2252_HMGKKDRX3_s_1_trimmed.fastq.gz .
 ln -s ../SQ2252_HMGKKDRX3_s_2_trimmed.fastq.gz .
 cd ..
-# moves files into raw directory then comes out of raw directory 
+# should move files into raw directory then comes out of raw directory 
+
+# however didnt quite work so had to move. 
+mv SQ2252_HMGN2DRX3_s_1_trimmed.fastq.gz raw/
+mv SQ2252_HMGN2DRX3_s_2_trimmed.fastq.gz raw/
+mv SQ2252_HMGKKDRX3_s_1_trimmed.fastq.gz raw/
+mv SQ2252_HMGKKDRX3_s_2_trimmed.fastq.gz raw/
 
 module load Stacks
 
@@ -63,6 +69,13 @@ process_radtags -p raw/ -o ./samples/ -b barcodes.txt -e pstI -c -q --inline_nul
 
 # create popmap file with my barcodes
 awk '{print $1"\tpop"}' barcodes.txt > popmap.txt
+
+#had to reformate code above as it used barcodes instead of sample id this fixed it
+awk 'NR==FNR {map[$1] = $2; next} {print map[$1] "\t" $2}' barcodes.txt popmap.txt > fixed_popmap.txt
+
+# replace old pop map with fixed one
+mv fixed_popmap.txt popmap.txt
+
 
 # submit job for SNP calling using r80 method M = specificity of the 
 for i in 2 
