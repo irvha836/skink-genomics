@@ -106,3 +106,22 @@ do
 done
 
 # The stack depth parameter (-m) controls the number of raw reads required to form a stack, and the mismatch parameter (-M) specifies the number of allowed nucleotide mismatches between two stacks to merge them into a locus.
+
+
+
+
+
+
+# Trial run to test it works with just smaller samples. 
+# Parameter optimisation. Run on a random 10 samples.
+shuf popmap.txt | head -n 10 > popmap_opti.txt
+
+for i in 2 3 4 5 6 7 8
+do mkdir -p M$i; echo '#!/bin/sh' > runM$i.sh
+echo "module load Stacks/2.61-gimkl-2022a" >> runM$i.sh
+echo "denovo_map.pl --samples samples_concat/ --popmap popmap_opti.txt  -o M$i  -M $i -n $i -m 3 -T 8 " >> runM$i.sh
+sbatch -A uoo04250 -t 2-00:00:00 -J M$i -c 8 --mem=64G runM$i.sh
+done
+
+# Check jobs are running 
+squeue -u irvha836 
