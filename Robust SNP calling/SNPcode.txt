@@ -105,3 +105,4 @@ do
     sbatch -A uoo04250 -t 20:00:00 -J M$i -c 16 --mem=64G runM$i.sh
 done
 
+# The stack depth parameter (-m) controls the number of raw reads required to form a stack, and the mismatch parameter (-M) specifies the number of allowed nucleotide mismatches between two stacks to merge them into a locus.
