@@ -29,7 +29,7 @@ cutadapt -j 8 -a CCGAGATCGGAAGAGC -q 25 -o SQ2252_HMGN2DRX3_s_1_trimmed.fastq.gz
 
 # Process file 4 (N2 S2)
 cutadapt -j 8 -a CCGAGATCGGAAGAGC -q 25 -o SQ2252_HMGN2DRX3_s_2_trimmed.fastq.gz --minimum-length 42 SQ2252_HMGN2DRX3_s_2_fastq.txt.gz
-
+#apparently cut adapt didnt work
 # Generates outputs of how many reads and adapters were trimmed e.g 
 #Total reads processed:              50,289,339
 # Reads with adapters:                31,219,091 (62.1%)
