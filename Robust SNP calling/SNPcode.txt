@@ -63,7 +63,6 @@ mv SQ2252_HMGKKDRX3_s_1_trimmed.fastq.gz raw/
 mv SQ2252_HMGKKDRX3_s_2_trimmed.fastq.gz raw/
 
 module load Stacks
-
 # Step 4: Run `process_radtags` to filter and demultiplex the RADSeq data
 process_radtags -p raw/ -o ./samples/ -b barcodes.txt -e pstI -c -q --inline_null -r
 
@@ -96,7 +95,7 @@ sbatch -A uoo00116 -t 20:00:00 -J M$i -c 16 --mem=64G  runM$i.sh
 done
 
 # allows to test for m parameter of 3 5 and 7 see which is the best fit 
-for i in 3 5 7 
+for i in 2 3 4 5 6
 do 
     mkdir -p M$i
     echo '#!/bin/sh' > runM$i.sh
