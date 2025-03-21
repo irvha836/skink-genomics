@@ -126,3 +126,5 @@ done
 
 # Check jobs are running 
 squeue -u irvha836 
+
+# do cp not mv as mv can overide files
