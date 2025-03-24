@@ -14,3 +14,7 @@ md5 /Volumes/My\ Passport\ for\ Mac/Whitaker\ Skink/fastq_passW1/* > ~/Desktop/m
 
 #this is to check that the data ive copied over from otago genomics matches the copies in my hard drive
 diff md5fromOG.md5 md5fromHD.md5
+
+# or can run this if not already in desktop directory 
+diff ~/Desktop/md5fromOG.md5 ~/Desktop/md5fromHD.md5
+
