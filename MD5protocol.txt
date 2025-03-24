@@ -1,0 +1,16 @@
+# create an md5 file to preserve the raw sequencing data by generating a unique code for all my files this means the raw data wont get changed if i alter it 
+
+#change directory to where the raw data is 
+cd /Volumes/ldutoit/040325_WSKINK_1/WSKINK_1/20250304_1437_P2S-00650-B_PAY16484_e8780dd9/fastq_pass 
+
+#create an md5 file for my hard drive 
+md5 /Volumes/My\ Passport\ for\ Mac/Whitaker\ Skink/fastq_passW1/* > ~/Desktop/md5fromHD.md5
+
+# create an md5 for the source location (otago genomics) 
+md5 /Volumes/ldutoit/040325_WSKINK_1/WSKINK_1/20250304_1437_P2S-00650-B_PAY16484_e8780dd9/fastq_pass/* > ~/Desktop/md5fromOG.md5
+
+# create an md5 for the hard drive location 
+md5 /Volumes/My\ Passport\ for\ Mac/Whitaker\ Skink/fastq_passW1/* > ~/Desktop/md5fromHD.md5
+
+#this is to check that the data ive copied over from otago genomics matches the copies in my hard drive
+diff md5fromOG.md5 md5fromHD.md5
