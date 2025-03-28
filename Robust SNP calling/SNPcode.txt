@@ -11,13 +11,17 @@ zcat SQ2252_HMGN2DRX3_s_2_fastq.txt.gz | head -n 1000000 > test_small_N2_S2.fast
 module load FastQC
 fastqc test_small_*.fastq
 
-# Find lots of adapters present after 42 bases. by looking at atadper content 
+# Find lots of adapters present after 42 bases. 
+# by looking at atadper content and it detects illumina universal adapter based on colour of lines in graph 
+# Also The presence of Illumina Small RNA 3' Adapter and Illumina Small RNA 5' Adapter also suggests that you are dealing with Illumina sequencing data.
 # Find Lots of overrepresented sequences 
 # Find majority of reads are around 101bp by looking at sequence length Distribution - so can set short read cut off at around 50 so wont lose data.
 
-# Trimming adapters and short reads 
-module load cutadapt
+######################################
 
+# Trimming adapters and short reads by loading cutadapt
+module load cutadapt
+# Origonally ran this cut adapt code however it didnt work as ive got the wrong adapter in there so obviously it wont do anything.
 # Process file 1 (KK S1)
 cutadapt -j 8 -a CCGAGATCGGAAGAGC -q 25 -o SQ2252_HMGKKDRX3_s_1_trimmed.fastq.gz --minimum-length 42 SQ2252_HMGKKDRX3_s_1_fastq.txt.gz
 
@@ -29,7 +33,7 @@ cutadapt -j 8 -a CCGAGATCGGAAGAGC -q 25 -o SQ2252_HMGN2DRX3_s_1_trimmed.fastq.gz
 
 # Process file 4 (N2 S2)
 cutadapt -j 8 -a CCGAGATCGGAAGAGC -q 25 -o SQ2252_HMGN2DRX3_s_2_trimmed.fastq.gz --minimum-length 42 SQ2252_HMGN2DRX3_s_2_fastq.txt.gz
-#apparently cut adapt didnt work
+
 # Generates outputs of how many reads and adapters were trimmed e.g 
 #Total reads processed:              50,289,339
 # Reads with adapters:                31,219,091 (62.1%)
@@ -43,6 +47,59 @@ cutadapt -j 8 -a CCGAGATCGGAAGAGC -q 25 -o SQ2252_HMGN2DRX3_s_2_trimmed.fastq.gz
 # No. of allowed errors: 1-9 bp: 0; 10-16 bp: 1
 # Bases preceding removed adapters:
 #  A: 20.8%  C: 30.8% G: 26.0%  T: 22.1%  none/other: 0.3%
+
+###################################
+#This new code is made with illumina adapters so should work
+# Process file 1 (KK S1)
+cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 42 -o SQ2252_HMGKKDRX3_s_1_trimmed.fastq.gz SQ2252_HMGKKDRX3_s_1_fastq.txt.gz
+
+# Process file 2 (KK S2)
+cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 42 -o SQ2252_HMGKKDRX3_s_2_trimmed.fastq.gz SQ2252_HMGKKDRX3_s_2_fastq.txt.gz
+
+# Process file 3 (N2 S1)
+cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 42 -o SQ2252_HMGN2DRX3_s_1_trimmed.fastq.gz SQ2252_HMGN2DRX3_s_1_fastq.txt.gz
+
+# Process file 4 (N2 S2)
+cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 42 -o SQ2252_HMGN2DRX3_s_2_trimmed.fastq.gz SQ2252_HMGN2DRX3_s_2_fastq.txt.gz
+# Added to adapter sequence by running cut adapt and looking at this output 
+# Bases preceding removed adapters:
+#  A: 0.8%
+#  C: 97.6%
+# G: 0.5%
+#  T: 0.6%
+#  none/other: 0.5%
+# WARNING:
+#    The adapter is preceded by 'C' extremely often.
+#    The provided adapter sequence could be incomplete at its 5' end.
+#    Ignore this warning when trimming primers.
+
+# This output tells me all adapter is gone as its a pretty even distribution of the bases. 
+# Bases preceding removed adapters:
+#  A: 20.8%
+#  C: 30.8%
+#  G: 25.9%
+#  T: 22.1%
+#  none/other: 0.4%
+
+# After running FastQC on my trimmed file
+module load FastQC
+fastqc SQ2252_HMGKKDRX3_s_1_trimmed.fastq.gz
+it detected an overrepresented sequence of whole adapter so trialed trimming whole thing
+cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 42 -o SQ2252_HMGKKDRX3_s_1_trimmed_v2.fastq.gz SQ2252_HMGKKDRX3_s_1_fastq.txt.gz
+
+
+
+
+
+
+
+
+
+#then look if it worked for sequence length distribution 
+zcat SQ2252_HMGKKDRX3_s_1_trimmed.fastq.gz | awk 'NR % 4 == 2 {print length($0)}' | sort | uniq -c
+
+
+###############################################
 
 # Demultiplexing
 # already have barcode.txt
@@ -62,6 +119,7 @@ mv SQ2252_HMGN2DRX3_s_2_trimmed.fastq.gz raw/
 mv SQ2252_HMGKKDRX3_s_1_trimmed.fastq.gz raw/
 mv SQ2252_HMGKKDRX3_s_2_trimmed.fastq.gz raw/
 
+#########################################
 module load Stacks
 # Step 4: Run `process_radtags` to filter and demultiplex the RADSeq data
 process_radtags -p raw/ -o ./samples/ -b barcodes.txt -e pstI -c -q --inline_null -r
@@ -91,7 +149,7 @@ for i in 2
 do mkdir -p M$i; echo '#!/bin/sh' > runM$i.sh
 echo "module load Stacks/2.61-gimkl-2022a" >> runM$i.sh
 echo "denovo_map.pl --samples samples/ --popmap popmap.txt  -o M$i  -M $i -n $i -m 3 -T 16" >> runM$i.sh
-sbatch -A uoo00116 -t 20:00:00 -J M$i -c 16 --mem=64G  runM$i.sh
+sbatch -A uoo004250 -t 20:00:00 -J M$i -c 16 --mem=64G  runM$i.sh
 done
 
 # allows to test for m parameter of 3 5 and 7 see which is the best fit 
