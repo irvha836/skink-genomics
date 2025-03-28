@@ -50,17 +50,7 @@ cutadapt -j 8 -a CCGAGATCGGAAGAGC -q 25 -o SQ2252_HMGN2DRX3_s_2_trimmed.fastq.gz
 
 ###################################
 #This new code is made with illumina adapters so should work
-# Process file 1 (KK S1)
-cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 42 -o SQ2252_HMGKKDRX3_s_1_trimmed.fastq.gz SQ2252_HMGKKDRX3_s_1_fastq.txt.gz
 
-# Process file 2 (KK S2)
-cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 42 -o SQ2252_HMGKKDRX3_s_2_trimmed.fastq.gz SQ2252_HMGKKDRX3_s_2_fastq.txt.gz
-
-# Process file 3 (N2 S1)
-cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 42 -o SQ2252_HMGN2DRX3_s_1_trimmed.fastq.gz SQ2252_HMGN2DRX3_s_1_fastq.txt.gz
-
-# Process file 4 (N2 S2)
-cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 42 -o SQ2252_HMGN2DRX3_s_2_trimmed.fastq.gz SQ2252_HMGN2DRX3_s_2_fastq.txt.gz
 # Added to adapter sequence by running cut adapt and looking at this output 
 # Bases preceding removed adapters:
 #  A: 0.8%
@@ -88,12 +78,19 @@ it detected an overrepresented sequence of whole adapter so trialed trimming who
 cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 42 -o SQ2252_HMGKKDRX3_s_1_trimmed_v2.fastq.gz SQ2252_HMGKKDRX3_s_1_fastq.txt.gz
 
 
+################################
+#issue was that my distributions werent the same so stacks wasnt running properly so ive now added a maximum length to this code to ensure all reads are 42 bp in length. 
+# Process file 1 (KK S1)
+cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 42 --length 42 -o SQ2252_HMGKKDRX3_s_1_trimmed.fastq.gz SQ2252_HMGKKDRX3_s_1_fastq.txt.gz
 
+# Process file 2 (KK S2)
+cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 42 --length 42 -o SQ2252_HMGKKDRX3_s_2_trimmed.fastq.gz SQ2252_HMGKKDRX3_s_2_fastq.txt.gz
 
+# Process file 3 (N2 S1)
+cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 42 --length 42 -o SQ2252_HMGN2DRX3_s_1_trimmed.fastq.gz SQ2252_HMGN2DRX3_s_1_fastq.txt.gz
 
-
-
-
+# Process file 4 (N2 S2)
+cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 42 --length 42 -o SQ2252_HMGN2DRX3_s_2_trimmed.fastq.gz SQ2252_HMGN2DRX3_s_2_fastq.txt.gz
 
 #then look if it worked for sequence length distribution 
 zcat SQ2252_HMGKKDRX3_s_1_trimmed.fastq.gz | awk 'NR % 4 == 2 {print length($0)}' | sort | uniq -c
@@ -112,12 +109,6 @@ ln -s ../SQ2252_HMGKKDRX3_s_1_trimmed.fastq.gz .
 ln -s ../SQ2252_HMGKKDRX3_s_2_trimmed.fastq.gz .
 cd ..
 # should move files into raw directory then comes out of raw directory 
-
-# however didnt quite work so had to move. 
-mv SQ2252_HMGN2DRX3_s_1_trimmed.fastq.gz raw/
-mv SQ2252_HMGN2DRX3_s_2_trimmed.fastq.gz raw/
-mv SQ2252_HMGKKDRX3_s_1_trimmed.fastq.gz raw/
-mv SQ2252_HMGKKDRX3_s_2_trimmed.fastq.gz raw/
 
 #########################################
 module load Stacks
