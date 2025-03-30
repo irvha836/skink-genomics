@@ -86,3 +86,5 @@ MINLEN:25 means minimim read lenght cant be below 25 so just ignores them
 then have to tell adapters e.g ILLUMINACLIP 
 
 ls -lh lets you look at file size 
+
+# up or down arrow lets you look at previous code youve run 
