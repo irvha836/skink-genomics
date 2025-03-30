@@ -206,3 +206,17 @@ zcat M3/A01.snps.tsv.gz | wc -l
 #=509927
 zcat M3/A01.tags.tsv.gz | wc -l
 #=143014
+
+##########################################
+
+# check for low-quality individuals
+module load Stacks
+populations -P M2/ -M popmap.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.8  --write-single-snp -O M2
+
+module load VCFtools 
+vcftools --vcf M2/populations.snps.vcf --missing-indv 
+sort -k 4n out.imiss
+
+#individuals DN75, F25, PS44 all had missing data. but the majority were under 50% or even 30% missing data so need to make a new popmap without low quality individuals above to then run it again. 
+
+populations -P M2/ -M popmap.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.8  --write-single-snp -O M2
