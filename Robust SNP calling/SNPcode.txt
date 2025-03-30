@@ -177,3 +177,32 @@ done
 squeue -u irvha836 
 
 # do cp not mv as mv can overide files
+
+
+#####################################
+#M2
+# This gives the number of catalog loci in M2 (the weakest restriction) 
+zcat M2/catalog.tags.tsv.gz | wc -l 
+#got 505322 
+
+#A01.tags.tsv.gz → Contains all loci detected in this sample. = 142314
+
+#A01.snps.tsv.gz → Lists the SNPs found at those loci. = 521023
+
+#A01.alleles.tsv.gz → Contains allele information at each SNP. = 
+
+#A01.matches.bam → BAM file showing alignment of reads to loci.
+
+#A01.matches.tsv.gz → Summary of how reads matched between individuals.
+
+
+# Higher M values merge more loci, which can increase or decrease read depth per locus
+
+#M3 
+
+zcat M3/A01.alleles.tsv.gz | wc -l
+#=3542
+zcat M3/A01.snps.tsv.gz | wc -l
+#=509927
+zcat M3/A01.tags.tsv.gz | wc -l
+#=143014
