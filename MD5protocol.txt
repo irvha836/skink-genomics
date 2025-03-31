@@ -20,3 +20,8 @@ diff ~/Desktop/md5fromOG.md5 ~/Desktop/md5fromHD.md5
 
 # did the same for W1B files and just changed file directory and names
 diff ~/Desktop/md5fromOGW1B.md5 ~/Desktop/md5fromHDW1B.md5
+
+
+
+# do cd to file location 
+# before diff delete file location path as thats causing the problem. 
