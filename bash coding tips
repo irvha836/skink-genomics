@@ -17,6 +17,7 @@ Module spider = search module
 # 'Ls-a' shows all files in a directory 
 # 'Ls ..' tells you directory above 
 # 'Ls *fastq' or 'Ls *7*.fastq' tells you which files have a 7 within their name as * is a wildcard
+# "ls -t" lists items by time of last change instead of alphabetically.
 
 # “man” and then any code you run can tell you about it in more detail 
 # “Head __File name___” allows you to look into first file samples in the file are read in 4s
@@ -88,3 +89,5 @@ then have to tell adapters e.g ILLUMINACLIP
 ls -lh lets you look at file size 
 
 # up or down arrow lets you look at previous code youve run 
+
+#ls is the command, with an option -F and an argument /.
