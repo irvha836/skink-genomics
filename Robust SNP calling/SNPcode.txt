@@ -228,7 +228,11 @@ populations -P M2/ -M popmap.txt  --vcf --structure --plink --treemix --max-obs-
 
 vcftools --vcf M2/populations.snps.vcf --max-missing 0.8 --minDP 5 --remove-indv NID_1 --remove-indv NID_2 --remove-indv NID_3 --remove-indv NID_4 --remove-indv NID_5 --remove-indv NID_6 --remove-indv NID_8 --maf 0.0001 --recode --out dotterel_southonly_mindp5_r08
 
+
+# checks depth of my snps 
 add --depth 
+
+# checks true heterozygosity of my snps
 and --het
 
 # Are fine to move forward with M2 dataset
