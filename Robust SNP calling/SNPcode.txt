@@ -207,16 +207,63 @@ zcat M3/A01.snps.tsv.gz | wc -l
 zcat M3/A01.tags.tsv.gz | wc -l
 #=143014
 
+###############################
+
+
 ##########################################
 
 # check for low-quality individuals
 module load Stacks
-populations -P M2/ -M popmap.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.8  --write-single-snp -O M2
+populations -P M2/ -M popmap.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.5  --write-single-snp -O M2
 
 module load VCFtools 
 vcftools --vcf M2/populations.snps.vcf --missing-indv 
 sort -k 4n out.imiss
 
-#individuals DN75, F25, PS44 all had missing data. but the majority were under 50% or even 30% missing data so need to make a new popmap without low quality individuals above to then run it again. 
+#individuals DN75, F25, PS44, F10 D04 all had missing data. but the majority were under 50% or even 30% missing data so need to make a new popmap without low quality individuals above to then run it again. 
 
 populations -P M2/ -M popmap.txt  --vcf --structure --plink --treemix --max-obs-het 0.65 -R 0.8  --write-single-snp -O M2
+
+###################################
+
+vcftools --vcf M2/populations.snps.vcf --max-missing 0.8 --minDP 5 --remove-indv NID_1 --remove-indv NID_2 --remove-indv NID_3 --remove-indv NID_4 --remove-indv NID_5 --remove-indv NID_6 --remove-indv NID_8 --maf 0.0001 --recode --out dotterel_southonly_mindp5_r08
+
+add --depth 
+and --het
+
+# Are fine to move forward with M2 dataset
+
+
+##########################
+# remove low quality individuals 
+vcftools --vcf M2/populations.snps.vcf --max-missing 0.8 --minDP 5 --remove-indv NID_1 --remove-indv NID_2 --remove-indv NID_3 --remove-indv NID_4 --remove-indv NID_5 --remove-indv NID_6 --remove-indv NID_8 --maf 0.0001 --recode --out dotterel_southonly_mindp5_r08
+
+######################################
+
+vcftools --vcf M2/populations.snps.vcf --max-missing 0.5 --minDP 5 \
+--remove-indv DN75 --remove-indv F25 --remove-indv PS44 --remove-indv F10 --remove-indv D04 \
+--maf 0.0001 --recode --out robust_mindp5_r05
+
+#kept 1626 out of a possible 4149 Sites
+#####################################
+
+vcftools --vcf M2/populations.snps.vcf --max-missing 0.6 --minDP 5 \
+--remove-indv DN75 --remove-indv F25 --remove-indv PS44 --remove-indv F10 --remove-indv D04 \
+--maf 0.0001 --recode --out robust_mindp5_r06
+
+# kept 508 out of a possible 4149 Sites
+######################
+
+vcftools --vcf M2/populations.snps.vcf --max-missing 0.7 --minDP 5 \
+--remove-indv DN75 --remove-indv F25 --remove-indv PS44 --remove-indv F10 --remove-indv D04 \
+--maf 0.0001 --recode --out robust_mindp5_r07
+
+# kept 168 out of a possible 4149 Sites
+
+vcftools --vcf M2/populations.snps.vcf --max-missing 0.8 --minDP 5 \
+--remove-indv DN75 --remove-indv F25 --remove-indv PS44 --remove-indv F10 --remove-indv D04 \
+--maf 0.0001 --recode --out robust_mindp5_r08
+
+# kept 41 out of a possible 4149 sites
+
+
