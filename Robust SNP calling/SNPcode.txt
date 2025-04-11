@@ -97,6 +97,21 @@ zcat SQ2252_HMGKKDRX3_s_1_trimmed.fastq.gz | awk 'NR % 4 == 2 {print length($0)}
 
 
 ###############################################
+# module load cutadapt
+# trial for changing length to be longer to allow for more data
+# Process file 1 (KK S1)
+cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 55 --length 55 -o SQ2252_HMGKKDRX3_s_1_trimmed.fastq.gz SQ2252_HMGKKDRX3_s_1_fastq.txt.gz
+
+# Process file 2 (KK S2)
+cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 55 --length 55 -o SQ2252_HMGKKDRX3_s_2_trimmed.fastq.gz SQ2252_HMGKKDRX3_s_2_fastq.txt.gz
+
+# Process file 3 (N2 S1)
+cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 55 --length 55 -o SQ2252_HMGN2DRX3_s_1_trimmed.fastq.gz SQ2252_HMGN2DRX3_s_1_fastq.txt.gz
+
+# Process file 4 (N2 S2)
+cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 55 --length 55 -o SQ2252_HMGN2DRX3_s_2_trimmed.fastq.gz SQ2252_HMGN2DRX3_s_2_fastq.txt.gz
+
+
 
 # Demultiplexing
 # already have barcode.txt
@@ -144,7 +159,7 @@ sbatch -A uoo004250 -t 20:00:00 -J M$i -c 16 --mem=64G  runM$i.sh
 done
 
 # allows to test for m parameter of 3 5 and 7 see which is the best fit 
-for i in 2 3 4 5 6
+for i in 2
 do 
     mkdir -p M$i
     echo '#!/bin/sh' > runM$i.sh
