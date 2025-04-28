@@ -22,15 +22,15 @@ module load FastQC
 fastqc test_small_*.fastq
 ```
 
-# Find lots of adapters present after 42 bases. 
-# by looking at adapter content you can see it detects illumina universal adapter based on colour of lines in graph. 
-# Also The presence of Illumina Small RNA 3' Adapter and Illumina Small RNA 5' Adapter also suggests that you are dealing with Illumina sequencing data.
-# Find Lots of overrepresented sequences 
-# Find majority of reads are around 101bp by looking at sequence length Distribution - so can set short read cut off at around 50 so wont lose data.
+Find lots of adapters present after 42 bases. 
+by looking at adapter content you can see it detects illumina universal adapter based on colour of lines in graph. 
+Also The presence of Illumina Small RNA 3' Adapter and Illumina Small RNA 5' Adapter also suggests that you are dealing with Illumina sequencing data.
+We also find Lots of overrepresented sequences and that majority of reads are around 101bp by looking at sequence length Distribution - so can set short read cut off at around 50 so wont lose data.
 
 ######################################
 
-# Trimming adapters and short reads by loading cutadapt
+# **Trimming adapters and short reads by loading cutadapt**
+
 module load cutadapt
 # Origonally ran this cut adapt code however it didnt work as ive got the wrong adapter in there so obviously it wont do anything.
 # Process file 1 (KK S1)
