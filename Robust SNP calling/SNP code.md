@@ -54,7 +54,6 @@ ln -s ../SQ2252_HMGKKDRX3_s_2_trimmed.fastq.gz .
 cd ..
 ```
 
-```
  Run `process_radtags` to filter and demultiplex the RADSeq data
 
 ```
