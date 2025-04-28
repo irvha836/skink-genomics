@@ -1,18 +1,26 @@
-# get to Correct Directory
+get to Correct Directory
+```
 cd popgen 
+```
 
-# Quality check all 4 of the fastq files by generating test small files. (zcat decompresses gz files)
+Quality Checking 
+
+check all 4 of the fastq files by generating test small files. (zcat decompresses gz files)
+```
 zcat SQ2252_HMGKKDRX3_s_1_fastq.txt.gz | head -n 1000000 > test_small_KK_S1.fastq
 zcat SQ2252_HMGKKDRX3_s_2_fastq.txt.gz | head -n 1000000 > test_small_KK_S2.fastq
 zcat SQ2252_HMGN2DRX3_s_1_fastq.txt.gz | head -n 1000000 > test_small_N2_S1.fastq
 zcat SQ2252_HMGN2DRX3_s_2_fastq.txt.gz | head -n 1000000 > test_small_N2_S2.fastq
+```
 
-# Actual Quality check with FastQC 
+Perform quality check with FastQC 
+```
 module load FastQC
 fastqc test_small_*.fastq
+```
 
 # Find lots of adapters present after 42 bases. 
-# by looking at atadper content and it detects illumina universal adapter based on colour of lines in graph 
+# by looking at adapter content you can see it detects illumina universal adapter based on colour of lines in graph. 
 # Also The presence of Illumina Small RNA 3' Adapter and Illumina Small RNA 5' Adapter also suggests that you are dealing with Illumina sequencing data.
 # Find Lots of overrepresented sequences 
 # Find majority of reads are around 101bp by looking at sequence length Distribution - so can set short read cut off at around 50 so wont lose data.
