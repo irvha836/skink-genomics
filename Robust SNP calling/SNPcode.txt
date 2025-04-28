@@ -1,6 +1,5 @@
 get to Correct Directory
-```
-cd popgen 
+```cd popgen 
 ```
 
 Quality Checking 
