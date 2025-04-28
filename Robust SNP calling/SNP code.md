@@ -77,7 +77,7 @@ replace old pop map with fixed one
 ```
 mv fixed_popmap.txt popmap.txt
 ```
-# **Submit snp calling slurm job**
+## **Submit snp calling slurm job**
 
 ```
 for i in 2
@@ -94,7 +94,7 @@ check job is running
 ```
 squeue -u irvha836 
 ```
-# **Quality check SNP data**
+## **Quality check SNP data**
 
 ```
 module load Stacks
