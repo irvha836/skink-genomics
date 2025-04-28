@@ -1,3 +1,5 @@
+# **SNP Calling**
+
 get to Correct Directory
 
 ```
