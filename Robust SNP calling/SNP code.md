@@ -23,6 +23,8 @@ fastqc test_small_*.fastq
 ```
 ## **Trimming adapters and short reads**
 
+cutadapt works by using cutadapt -a ADAPTER [Sequence] [-o output.fastq file] input.fastq file 
+use test_small file to look at overrepresented sequences as likely its the adapter will be overrepresented - if you havent got all the adapter then cutadapt will tell you that in majority of samples there is a A T C or G following likely indicating it is part of the adapter
 ```
 module load cutadapt
 # Origonally ran this cut adapt code however it didnt work as ive got the wrong adapter in there so obviously it wont do anything.
