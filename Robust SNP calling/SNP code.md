@@ -3,7 +3,7 @@
 get to Correct Directory
 
 ```
-cd popgen 
+cd uoo04250/popgen 
 ```
 
 ## **Quality Checking** 
