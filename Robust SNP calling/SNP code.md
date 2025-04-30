@@ -29,7 +29,7 @@ use test_small file to look at overrepresented sequences as likely its the adapt
 module load cutadapt
 # Origonally ran this cut adapt code however it didnt work as ive got the wrong adapter in there so obviously it wont do anything.
 # Process file 1 (KK S1)
-cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 55 --length 55 -o SQ2252_HMGKKDRX3_s_1_trimmed.fastq.gz SQ2252_HMGKKDRX3_s_1_fastq.txt.gz
+cutadapt -j 8 -a GAGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 42 --length 42 -o SQ2252_HMGKKDRX3_s_1_trimmed.fastq.gz SQ2252_HMGKKDRX3_s_1_fastq.txt.gz
 
 # Process file 2 (KK S2)
 cutadapt -j 8 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTCATAGGATCTCG -q 25 --minimum-length 55 --length 55 -o SQ2252_HMGKKDRX3_s_2_trimmed.fastq.gz SQ2252_HMGKKDRX3_s_2_fastq.txt.gz
