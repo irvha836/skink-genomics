@@ -106,13 +106,30 @@ module load VCFtools
 vcftools --vcf M2/populations.snps.vcf --missing-indv 
 sort -k 4n out.imiss
 ```
-idenfified individuals DN75, F25, PS44, F10 & D04 with lots of missing so remove them
+shows how much data is missing for each individual 
+
+Identified individuals DN75, F25, PS44, F10 & D04 with over 97% of their data missing, so remove them
 can also play around with max missing 
 
+Second run individuals DN75, PS44, F25, DO4, F10, had over 97% of their data missing. 
+
 ```
-vcftools --vcf M2/populations.snps.vcf --max-missing 0.5 --minDP 5 \
+vcftools --vcf M2/populations.snps.vcf \
+--max-missing 0.6 --minDP 3 \
 --remove-indv DN75 --remove-indv F25 --remove-indv PS44 --remove-indv F10 --remove-indv D04 \
---maf 0.0001 --recode --out robust_mindp5_r05
+--maf 0.0001 --recode --out robust_mindp3_r06
+```
+After filtering and lowering my minDP to 3 from 5 it, kept 3897 out of a possible 3912 Sites
+Additonally changed max missing to 0.6 to 0.5 kept 1552 out of a possible 3912 Sites
+
+### Investigating Depth & Heterozygosity
+
+run independent analysis of Het & Depth on my filtered output file e.g step above run with minDP of 3 and max missing of 0.6 (robust_mindp3_r06.recode.vcf)
+```
+vcftools --vcf robust_mindp3_r06.recode.vcf --het
+```
+```
+vcftools --vcf robust_mindp3_r06.recode.vcf --depth
 ```
 
-add het max-obs-het 0.65 -R 0.8???
+
