@@ -111,7 +111,7 @@ shows how much data is missing for each individual
 Identified individuals DN75, F25, PS44, F10 & D04 with over 97% of their data missing, so remove them
 can also play around with max missing 
 
-Second run individuals DN75, PS44, F25, DO4, F10, had over 97% of their data missing. 
+Second run individuals with over 85% of data missing were removed (DN75, PS44, F25, DO4, F10, F21, F28, F02, D29, A03, C05, F23, D09, C06) 
 
 ```
 vcftools --vcf M2/populations.snps.vcf \
