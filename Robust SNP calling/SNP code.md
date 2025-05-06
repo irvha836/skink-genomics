@@ -123,6 +123,8 @@ vcftools --vcf M2/populations.snps.vcf \
 After filtering and lowering my minDP to 3 from 5 it, kept 3897 out of a possible 3912 Sites
 Additonally changed max missing to 0.6 to 0.5 kept 1552 out of a possible 3912 Sites
 
+3795 out of a possible 3912 Sites
+
 ### Investigating Depth & Heterozygosity
 
 run independent analysis of Het & Depth on my filtered output file e.g step above run with minDP of 3 and max missing of 0.6 (robust_mindp3_r06.recode.vcf)
