@@ -161,9 +161,9 @@ vcftools --vcf robust_mindp3_r06.recode.vcf --depth
 
 playing around with different paramaters
 ```
-vcftools --vcf robust_mindp3_r06.recode.vcf --het --out robust_mindp4_r06_het
+vcftools --vcf robust_mindp4_r06.recode.vcf --het --out robust_mindp4_r06_het
 
-vcftools --vcf robust_mindp3_r06.recode.vcf --depth --out robust_mindp4_r06_depth
+vcftools --vcf robust_mindp4_r06.recode.vcf --depth --out robust_mindp4_r06_depth
 ```
 
 ```
