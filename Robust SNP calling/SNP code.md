@@ -151,6 +151,7 @@ vcftools --vcf M2/populations.snps.vcf \
 ### Investigating Depth & Heterozygosity
 
 run independent analysis of Het & Depth on my filtered output file e.g step above run with minDP of 3 and max missing of 0.6 (robust_mindp3_r06.recode.vcf)
+
 ```
 vcftools --vcf robust_mindp3_r06.recode.vcf --het
 ```
@@ -158,6 +159,7 @@ vcftools --vcf robust_mindp3_r06.recode.vcf --het
 vcftools --vcf robust_mindp3_r06.recode.vcf --depth
 ```
 
+playing around with different paramaters
 ```
 vcftools --vcf robust_mindp3_r06.recode.vcf --het --out robust_mindp4_r06_het
 
