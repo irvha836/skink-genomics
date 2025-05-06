@@ -116,8 +116,9 @@ Second run individuals DN75, PS44, F25, DO4, F10, had over 97% of their data mis
 ```
 vcftools --vcf M2/populations.snps.vcf \
 --max-missing 0.6 --minDP 3 \
---remove-indv DN75 --remove-indv F25 --remove-indv PS44 --remove-indv F10 --remove-indv D04 \
---maf 0.0001 --recode --out robust_mindp3_r06
+--remove-indv DN75 --remove-indv F25 --remove-indv PS44 --remove-indv F10 --remove-indv F13 --remove-indv A04 --remove-indv D04 \
+--remove-indv F21 --remove-indv F28 --remove-indv F02 --remove-indv D29 --remove-indv A03 --remove-indv C05 --remove-indv F23 \
+--remove-indv D09 --remove-indv C06 --maf 0.0001 --recode --out robust_mindp3_r06
 ```
 After filtering and lowering my minDP to 3 from 5 it, kept 3897 out of a possible 3912 Sites
 Additonally changed max missing to 0.6 to 0.5 kept 1552 out of a possible 3912 Sites
