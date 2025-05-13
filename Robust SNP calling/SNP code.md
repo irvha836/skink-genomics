@@ -125,7 +125,8 @@ Additonally changed max missing to 0.6 to 0.5 kept 1552 out of a possible 3912 S
 
 3795 out of a possible 3912 Sites
 
-testing different minDP paramaters 
+decided to go with  minDP4 r06 after plotting depth against heterozygosity in R
+
 ```
 vcftools --vcf M2/populations.snps.vcf \
 --max-missing 0.6 --minDP 4 \
@@ -133,30 +134,15 @@ vcftools --vcf M2/populations.snps.vcf \
 --remove-indv F21 --remove-indv F28 --remove-indv F02 --remove-indv D29 --remove-indv A03 --remove-indv C05 --remove-indv F23 \
 --remove-indv D09 --remove-indv C06 --maf 0.0001 --recode --out robust_mindp4_r06
 ```
-```
-vcftools --vcf M2/populations.snps.vcf \
---max-missing 0.6 --minDP 5 \
---remove-indv DN75 --remove-indv F25 --remove-indv PS44 --remove-indv F10 --remove-indv F13 --remove-indv A04 --remove-indv D04 \
---remove-indv F21 --remove-indv F28 --remove-indv F02 --remove-indv D29 --remove-indv A03 --remove-indv C05 --remove-indv F23 \
---remove-indv D09 --remove-indv C06 --maf 0.0001 --recode --out robust_mindp5_r06
-```
-```
-vcftools --vcf M2/populations.snps.vcf \
---max-missing 0.6 --minDP 6 \
---remove-indv DN75 --remove-indv F25 --remove-indv PS44 --remove-indv F10 --remove-indv F13 --remove-indv A04 --remove-indv D04 \
---remove-indv F21 --remove-indv F28 --remove-indv F02 --remove-indv D29 --remove-indv A03 --remove-indv C05 --remove-indv F23 \
---remove-indv D09 --remove-indv C06 --maf 0.0001 --recode --out robust_mindp6_r06
-```
-
 ### Investigating Depth & Heterozygosity
 
-run independent analysis of Het & Depth on my filtered output file e.g step above run with minDP of 3 and max missing of 0.6 (robust_mindp3_r06.recode.vcf)
+run independent analysis of Het & Depth on my filtered output file e.g step above run with minDP of 4 and max missing of 0.6 (robust_mindp4_r06.recode.vcf)
 
 ```
-vcftools --vcf robust_mindp3_r06.recode.vcf --het
+vcftools --vcf robust_mindp4_r06.recode.vcf --het
 ```
 ```
-vcftools --vcf robust_mindp3_r06.recode.vcf --depth
+vcftools --vcf robust_mindp4_r06.recode.vcf --depth
 ```
 
 playing around with different paramaters
