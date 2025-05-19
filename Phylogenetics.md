@@ -48,6 +48,10 @@ maybe i do iqtree -s robust_mindp4_r06.recode.min4.phy -m MFP -bb 1000 -nt AUTO 
 download FIGtree to visualise it.
 
 # make own conda environment 
-
+```
+module load miniconda3
+conda create -n iqtree_env -c bioconda iqtree
+conda activate iqtree_env
+```
 
 GGtree, much much prettier (tutorial online)
