@@ -29,12 +29,13 @@ script for job
 #SBATCH --error=iqtree_error.log
 #SBATCH --time=24:00:00            # Max run time (hh:mm:ss)
 #SBATCH --mem=64G                  # Memory per node
-#SBATCH --cpus-per-task=16          # Adjust based on what IQ-TREE can use
+#SBATCH --cpus-per-task=16
 #SBATCH --ntasks=1
 
-module load iqtree
+module load IQ-TREE
 
-iqtree -s robust_mindp4_r06.recode.min4.phy -m GTR+G -bb 1000 -nt AUTO
+iqtree2 -s robust_mindp4_r06.recode.min4.phy -m GTR+G -bb 1000 -nt 16 -pre robust_tree
+
 
 ```sh
 module load IQ-TREE
@@ -46,6 +47,7 @@ maybe i do iqtree -s robust_mindp4_r06.recode.min4.phy -m MFP -bb 1000 -nt AUTO 
 
 download FIGtree to visualise it.
 
+# make own conda environment 
 
 
 GGtree, much much prettier (tutorial online)
