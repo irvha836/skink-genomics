@@ -7,4 +7,7 @@ e.g run one
 cp -r /home/irvha836/uoo04250/040325_WSKINK_1/WSKINK_1/20250304_1437_P2S-00650-B_PAY16484_e8780dd9/pod5 \
 >       /home/irvha836/uoo04250/genome_assembly/pod5/run1_pod5
 ```
-
+```
+cp -r /home/irvha836/uoo04250/070325_WSKINK_1B/WSKINK_1B/20250307_1554_P2S-00650-B_PAY16484_9d98130a/pod5 \
+>      /home/irvha836/uoo04250/genome_assembly/pod5/run2_pod5
+```
