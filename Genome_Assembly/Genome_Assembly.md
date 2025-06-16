@@ -130,7 +130,7 @@ Newer SLURM array
 #!/bin/bash
 #SBATCH --job-name=dorado_basecall
 #SBATCH --account uoo04250
-#SBATCH --time=48:00:00
+#SBATCH --time=72:00:00
 #SBATCH --mem=64G
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
