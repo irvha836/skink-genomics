@@ -25,110 +25,6 @@ SLURM JOB FOR REBASECALLING.
 ```
 #!/bin/bash
 #SBATCH --job-name=dorado_basecall
-#SBATCH --account uoo04250        # your NESI project
-#SBATCH --time=24:00:00           # walltime (adjust as needed)
-#SBATCH --mem=64G                 # RAM per job (adjust if needed)
-#SBATCH --cpus-per-task=8         # CPU cores per job
-#SBATCH --gres=gpu:1              # request 1 GPU (important for Dorado)
-#SBATCH --array=1-4               # run 4 jobs (one for each run)
-#SBATCH --output=dorado_%A_%a.out # log files
-
-# Load dorado module 
-module load Dorado/0.9.1
-
-# Define directories
-INPUT_DIR="/home/irvha836/uoo04250/genome_assembly/pod5"
-OUTPUT_DIR="/home/irvha836/uoo04250/genome_assembly/dorado_basecalls"
-
-# Map array task IDs to your subdirectories
-case $SLURM_ARRAY_TASK_ID in
-    1)
-      RUN_DIR="run1_pod5"
-      ;;
-    2)
-      RUN_DIR="run2_pod5"
-      ;;
-    3)
-      RUN_DIR="run3_pod5"
-      ;;
-    4)
-      RUN_DIR="run4_pod5"
-      ;;
-esac
-
-# Print which run is being processed
-echo "Starting basecalling for $RUN_DIR"
-
-# Dorado basecalling command
-dorado basecaller dna_r10.4.1_e8.2_400bps_sup@v4.2.0 \
-    $INPUT_DIR/$RUN_DIR \
-    --recursive \
-    --device cuda:all \
-    --emit-fastq \
-    --threads $SLURM_CPUS_PER_TASK \
-    > $OUTPUT_DIR/${RUN_DIR}.fastq
-
-echo "Finished basecalling for $RUN_DIR"
-```
-
-
-
-
-new SLURM array 
-```
-#!/bin/bash
-#SBATCH --job-name=dorado_basecall
-#SBATCH --account uoo04250
-#SBATCH --time=24:00:00
-#SBATCH --mem=64G
-#SBATCH --cpus-per-task=8
-#SBATCH --gres=gpu:1
-#SBATCH --array=1-4
-#SBATCH --output=dorado_%A_%a.out
-
-# Load Dorado module
-module load Dorado/0.9.1
-
-# Define input and output directories
-INPUT_DIR="/home/irvha836/uoo04250/genome_assembly/pod5"
-OUTPUT_DIR="/home/irvha836/uoo04250/genome_assembly/dorado_basecalls"
-
-# Create output directory if it doesn't exist
-mkdir -p $OUTPUT_DIR
-
-# Map SLURM_ARRAY_TASK_ID to pod5 run subdirectories
-case $SLURM_ARRAY_TASK_ID in
-    1)
-      RUN_DIR="run1_pod5"
-      ;;
-    2)
-      RUN_DIR="run2_pod5"
-      ;;
-    3)
-      RUN_DIR="run3_pod5"
-      ;;
-    4)
-      RUN_DIR="run4_pod5"
-      ;;
-esac
-
-echo "Starting basecalling for $RUN_DIR"
-
-# Run Dorado basecalling
-dorado basecaller dna_r10.4.1_e8.2_400bps_sup@v4.2.0 \
-    $INPUT_DIR/$RUN_DIR \
-    --recursive \
-    --device cuda:all \
-    --emit-fastq \
-    --output-dir $OUTPUT_DIR
-
-echo "Finished basecalling for $RUN_DIR"
-```
-
-Newer SLURM array 
-```
-#!/bin/bash
-#SBATCH --job-name=dorado_basecall
 #SBATCH --account uoo04250
 #SBATCH --time=72:00:00
 #SBATCH --mem=64G
@@ -185,8 +81,18 @@ Submit SLURM array
 ```
 sbatch dorado_array_basecall.sh
 ```
+Quality checking run 2 - can either do this individually or independently 
 
-then combine all fastq pass files from each run into one directory (catanating the files) 
+```
+NanoPlot --fastq calls_2025-06-16_T03-25-09.fastq \
+         --loglength \
+         --N50 \
+         --outdir run2_nanoplot_qc \
+         --threads 8
+
+```
+
+then combine all fastq pass files from each run into one directory (concatenating the files) 
 
 ```
 cat /home/irvha836/uoo04250/genome_assembly/dorado_basecalls/run*/pass/*.fastq > genome_all_pass.fastq
