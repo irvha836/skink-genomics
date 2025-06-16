@@ -26,7 +26,7 @@ SLURM JOB FOR REBASECALLING.
 #!/bin/bash
 #SBATCH --job-name=dorado_basecall
 #SBATCH --account uoo04250        # your NESI project
-#SBATCH --time=12:00:00           # walltime (adjust as needed)
+#SBATCH --time=24:00:00           # walltime (adjust as needed)
 #SBATCH --mem=64G                 # RAM per job (adjust if needed)
 #SBATCH --cpus-per-task=8         # CPU cores per job
 #SBATCH --gres=gpu:1              # request 1 GPU (important for Dorado)
