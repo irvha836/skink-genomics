@@ -120,5 +120,5 @@ NanoPlot --fastq calls_2025-06-16_T03-25-10.fastq \
 then combine all fastq pass files from each run into one directory (concatenating the files) 
 
 ```
-cat /home/irvha836/uoo04250/genome_assembly/dorado_basecalls/run*/pass/*.fastq > genome_all_pass.fastq
+cat /home/irvha836/uoo04250/genome_assembly/dorado_basecalls/run*/*.fastq > genome_all.fastq
 ```
