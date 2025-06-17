@@ -84,6 +84,10 @@ sbatch dorado_array_basecall.sh
 Quality checking run 2 - can either do this individually or independently 
 
 ```
+module load NanoPlot
+```
+
+```
 NanoPlot --fastq calls_2025-06-16_T03-25-09.fastq \
          --loglength \
          --N50 \
