@@ -98,6 +98,20 @@ NanoPlot --fastq calls_2025-06-16_T09-29-44.fastq \
          --outdir run4_nanoplot_qc \
          --threads 8
 ```
+```
+NanoPlot --fastq calls_2025-06-16_T03-25-10.fastq \
+         --loglength \
+         --N50 \
+         --outdir run1_nanoplot_qc \
+         --threads 8
+```
+```
+NanoPlot --fastq calls_2025-06-16_T03-25-10.fastq \
+         --loglength \
+         --N50 \
+         --outdir run3_nanoplot_qc \
+         --threads 8
+```
 
 then combine all fastq pass files from each run into one directory (concatenating the files) 
 
