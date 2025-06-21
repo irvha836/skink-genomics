@@ -158,6 +158,10 @@ cat "$f" | python3 -m NanoFilt -q 8 > "$out"
 
 echo "Filtered reads saved to $out"
 ```
+```
+sbatch --array=0-3 nanofilt_filter.sh
+```
+
 
 then combine all fastq pass files from each run into one directory (concatenating the files) 
 
