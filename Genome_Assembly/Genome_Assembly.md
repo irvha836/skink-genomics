@@ -128,11 +128,12 @@ submit as job
 #SBATCH --job-name=nanofilt_q8
 #SBATCH --output=nanofilt_q8_%A_%a.out
 #SBATCH --error=nanofilt_q8_%A_%a.err
-#SBATCH --time=12:00:00
+#SBATCH --time=72:00:00
 #SBATCH --mem=16G
 #SBATCH --cpus-per-task=4
 
-module load nanofilt
+# Load the specific NanoFilt module
+module load nanofilt/2.6.0-gimkl-2020a-Python-3.8.2
 
 # Output directory for filtered reads
 OUTDIR="/home/irvha836/uoo04250/genome_assembly/filtered_reads"
@@ -152,15 +153,11 @@ base=$(basename "$f" .fastq)
 # Construct output file path
 out="${OUTDIR}/${base}_q8.fastq"
 
-# Run NanoFilt to filter reads with Q >= 8
-cat "$f" | nanofilt -q 8 > "$out"
+# Use NanoFilt via Python module
+cat "$f" | python3 -m NanoFilt -q 8 > "$out"
 
 echo "Filtered reads saved to $out"
 ```
-
-
-
-
 
 then combine all fastq pass files from each run into one directory (concatenating the files) 
 
