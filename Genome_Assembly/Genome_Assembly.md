@@ -132,7 +132,7 @@ submit as job
 #SBATCH --mem=16G
 #SBATCH --cpus-per-task=4
 
-# Load the specific NanoFilt module
+# Load the NanoFilt module (optional, in case dependencies are needed)
 module load nanofilt/2.6.0-gimkl-2020a-Python-3.8.2
 
 # Output directory for filtered reads
@@ -147,14 +147,14 @@ f=${FILES[$SLURM_ARRAY_TASK_ID]}
 
 echo "Filtering $f for Q>=8"
 
-# Get basename without extension
+# Get base filename without extension
 base=$(basename "$f" .fastq)
 
-# Construct output file path
+# Set output file path
 out="${OUTDIR}/${base}_q8.fastq"
 
-# Use NanoFilt via Python module
-cat "$f" | python3 -m NanoFilt -q 8 > "$out"
+# Use NanoFilt with full path to filter reads with Q >= 8
+cat "$f" | /opt/nesi/CS400_centos7_bdw/nanofilt/2.6.0-gimkl-2020a-Python-3.8.2/bin/NanoFilt -q 8 > "$out"
 
 echo "Filtered reads saved to $out"
 ```
