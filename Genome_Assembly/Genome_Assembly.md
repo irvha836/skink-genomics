@@ -163,8 +163,8 @@ sbatch --array=0-3 nanofilt_filter.sh
 ```
 
 
-then combine all fastq pass files from each run into one directory (concatenating the files) 
+then combine all fastq pass files from each run into one (concatenating the files) 
 
 ```
-cat /home/irvha836/uoo04250/genome_assembly/dorado_basecalls/run*/*.fastq > genome_all.fastq
+cat *_q8.fastq > all_runs_q8.fastq
 ```
