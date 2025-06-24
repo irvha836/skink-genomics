@@ -181,6 +181,7 @@ cat *_q8.fastq > all_runs_q8.fastq
 #SBATCH --time=120:00:00
 #SBATCH --mem=250G
 #SBATCH --cpus-per-task=16
+#SBATCH --partition=genoa
 
 module load Flye/2.9.5-foss-2023a-Python-3.11.6
 
