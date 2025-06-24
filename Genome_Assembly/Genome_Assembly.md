@@ -168,3 +168,29 @@ then combine all fastq pass files from each run into one (concatenating the file
 ```
 cat *_q8.fastq > all_runs_q8.fastq
 ```
+
+
+
+** FLYE Assembly**
+
+```
+#!/bin/bash
+#SBATCH --job-name=FLYEQ8
+#SBATCH --output=Flyeq8_%A_%a.out
+#SBATCH --error=Flyeq8_%A_%a.err
+#SBATCH --time=120:00:00
+#SBATCH --mem=250G
+#SBATCH --cpus-per-task=16
+
+module load Flye/2.9.5-foss-2023a-Python-3.11.6
+
+flye --nano-raw /home/irvha836/uoo04250/genome_assembly/filtered_reads/all_runs_q8.fastq \
+     --out-dir /home/irvha836/uoo04250/genome_assembly/FLYE/FLYEQ8 \
+     --genome-size 1.6g \
+     --threads ${SLURM_CPUS_PER_TASK} \
+     --iterations 3
+```
+
+```
+tail -f flye_assembly_*.out
+```
