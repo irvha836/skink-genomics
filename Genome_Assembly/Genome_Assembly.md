@@ -185,6 +185,8 @@ cat *_q8.fastq > all_runs_q8.fastq
 
 module load Flye/2.9.5-foss-2023a-Python-3.11.6
 
+mkdir -p /home/irvha836/uoo04250/genome_assembly/FLYE/FLYEQ8
+
 flye --nano-raw /home/irvha836/uoo04250/genome_assembly/filtered_reads/all_runs_q8.fastq \
      --out-dir /home/irvha836/uoo04250/genome_assembly/FLYE/FLYEQ8 \
      --genome-size 1.6g \
