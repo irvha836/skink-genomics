@@ -199,6 +199,10 @@ tail -f flye_assembly_*.out
 ```
 
 **BUSCO**
+trying to laod in busco environment
+```
+apptainer pull docker://quay.io/biocontainers/busco:5.8.2--pyhdfd78af_0
+```
 ```
 #!/bin/bash
 #SBATCH --job-name=busco
