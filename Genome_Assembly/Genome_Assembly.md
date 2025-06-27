@@ -171,7 +171,7 @@ cat *_q8.fastq > all_runs_q8.fastq
 
 
 
-** FLYE Assembly**
+**FLYE Assembly**
 
 ```
 #!/bin/bash
@@ -196,4 +196,24 @@ flye --nano-raw /home/irvha836/uoo04250/genome_assembly/filtered_reads/all_runs_
 
 ```
 tail -f flye_assembly_*.out
+```
+
+**BUSCO**
+```
+#!/bin/bash
+#SBATCH --job-name=busco
+#SBATCH --time=04:00:00
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=64G
+#SBATCH --output=busco_%j.out
+#SBATCH --error=busco_%j.err
+
+cd /nesi/nobackup/uoo04250/genome_assembly/FLYE/FLYEQ8
+
+apptainer exec ./busco_5.8.2--pyhdfd78af_0.sif \
+busco -i assembly.fasta \
+-l sauropsida_odb10 \
+-o busco_output \
+-m genome \
+--cpu 16
 ```
