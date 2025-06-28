@@ -210,6 +210,7 @@ seqkit stats assembly.fasta
 ```
 
 file            format  type  num_seqs        sum_len  min_len    avg_len     max_len
+
 assembly.fasta  FASTA   DNA      6,602  1,500,389,369      147  227,262.9  25,721,214
 
 **BUSCO**
