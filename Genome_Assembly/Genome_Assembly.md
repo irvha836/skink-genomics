@@ -197,6 +197,20 @@ flye --nano-raw /home/irvha836/uoo04250/genome_assembly/filtered_reads/all_runs_
 ```
 tail -f flye_assembly_*.out
 ```
+preliminary stats 
+```
+awk '/^>/ {if (seqlen){print seqlen}; seqlen=0; next} {seqlen += length($0)} END {print seqlen}' assembly.fasta | \
+sort -nr | awk '{sum+=$1; a[NR]=$1} END {for (i=1;i<=NR;i++) {s+=a[i]; if (s>=sum/2) {print "N50 = " a[i]; exit}}}'
+```
+N50 = 3635236
+
+```
+module load SeqKit
+seqkit stats assembly.fasta
+```
+
+file            format  type  num_seqs        sum_len  min_len    avg_len     max_len
+assembly.fasta  FASTA   DNA      6,602  1,500,389,369      147  227,262.9  25,721,214
 
 **BUSCO**
 trying to laod in busco environment
