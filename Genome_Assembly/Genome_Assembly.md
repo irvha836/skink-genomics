@@ -221,18 +221,33 @@ apptainer pull docker://quay.io/biocontainers/busco:5.8.2--pyhdfd78af_0
 ```
 #!/bin/bash
 #SBATCH --job-name=busco
-#SBATCH --time=04:00:00
-#SBATCH --cpus-per-task=16
-#SBATCH --mem=64G
+#SBATCH --time=24:00:00
+#SBATCH --cpus-per-task=32
+#SBATCH --mem=128G
 #SBATCH --output=busco_%j.out
 #SBATCH --error=busco_%j.err
-
 cd /nesi/nobackup/uoo04250/genome_assembly/FLYE/FLYEQ8
-
 apptainer exec ./busco_5.8.2--pyhdfd78af_0.sif \
 busco -i assembly.fasta \
 -l sauropsida_odb10 \
 -o busco_output \
 -m genome \
---cpu 16
+--cpu 16 -f
 ```
+
+BUSCO stats
+	C:97.1%[S:93.8%,D:3.2%],F:0.7%,M:2.2%,n:7480,E:2.6%	   
+	7260	Complete BUSCOs (C)	(of which 186 contain internal stop codons)		   
+	7018	Complete and single-copy BUSCOs (S)	   
+	242	Complete and duplicated BUSCOs (D)	   
+	52	Fragmented BUSCOs (F)			   
+	168	Missing BUSCOs (M)			   
+	7480	Total BUSCO groups searched		   
+
+Assembly Statistics:
+	6602	Number of scaffolds
+	6602	Number of contigs
+	1500389369	Total length
+	0.000%	Percent gaps
+	3 MB	Scaffold N50
+	3 MB	Contigs N50
