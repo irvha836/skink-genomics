@@ -168,6 +168,12 @@ vcftools --vcf robust_mindp6_r06.recode.vcf --depth --out robust_mindp6_r06_dept
 
 
 **REF**
+
+```
+module load BWA
+```
+```
+bwa assembly.fasta
 ```
 cd SNP_GENOMEv1
 for file in ../samples/*fq.gz
@@ -186,3 +192,39 @@ samtools flagstat (file)
 
 ref_map.pl --samples GCA_017639485.1 --popmap popmap.txt -T 8 -o output_refmap populations -P output_refmap --vcf -R 0.2 -M popmap.txt -O output_refmap
 ```
+
+
+SNP Calling Ref script
+
+```
+#!/bin/bash
+#SBATCH -A uoo04250
+#SBATCH -J bwa_single_end
+#SBATCH -c 8
+#SBATCH --mem=64G
+#SBATCH -t 12:00:00
+#SBATCH -o bwa_se.out
+#SBATCH -e bwa_se.err
+
+module load BWA
+module load SAMtools
+
+cd /nesi/nobackup/uoo04250/ref_snps
+
+for file in ../samples/*.fq.gz
+do
+  base=$(basename $file .fq.gz)
+  echo "Mapping $file"
+  bwa mem -t 8 assembly.fasta $file | samtools sort -@ 8 -o ${base}.bam
+done
+
+# Index BAMs
+for bam in *.bam
+do
+  samtools index $bam
+done
+```
+
+
+
+
