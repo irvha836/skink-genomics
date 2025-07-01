@@ -163,3 +163,26 @@ vcftools --vcf robust_mindp6_r06.recode.vcf --het --out robust_mindp6_r06_het
 
 vcftools --vcf robust_mindp6_r06.recode.vcf --depth --out robust_mindp6_r06_depth
 ```
+
+
+
+
+**REF**
+```
+cd SNP_GENOMEv1
+for file in ../samples/*fq.gz
+ do echo base
+base=(basename $file .fq.gz)
+bwa mem -t 8 GCA_017639485.1_bPluApr1.pri_genomic.fna ../samples/$file | samtools sort -@ 8 | samtools view -@ 8 -hb >${base}.bam
+done
+```
+cd ..
+mkdir output_refmap
+```
+module load samtools
+
+samtools flagstat (file)
+```
+
+ref_map.pl --samples GCA_017639485.1 --popmap popmap.txt -T 8 -o output_refmap populations -P output_refmap --vcf -R 0.2 -M popmap.txt -O output_refmap
+```
