@@ -257,6 +257,30 @@ do
 done
 ```
 
+```
+grep "mapped (" *.flagstat.txt
+```
 
+
+ref mapping 
+#!/bin/bash
+#SBATCH -A uoo04250
+#SBATCH -J ref_map
+#SBATCH -c 16
+#SBATCH --mem=64G
+#SBATCH -t 20:00:00
+#SBATCH -o ref_map.out
+#SBATCH -e ref_map.err
+
+module purge
+module load Stacks/2.61-gimkl-2022a
+
+ref_map.pl \
+  --samples /nesi/nobackup/uoo04250/ref_snps/bams \
+  --popmap /nesi/nobackup/uoo04250/popgen/popmap.txt \
+  --reference /nesi/nobackup/uoo04250/ref_snps/assembly.fasta \
+  -o /nesi/nobackup/uoo04250/ref_snps/ref_output \
+  -T 16 \
+  -X "populations: --vcf"
 
 
