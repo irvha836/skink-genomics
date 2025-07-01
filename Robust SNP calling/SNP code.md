@@ -189,9 +189,41 @@ module load samtools
 
 samtools flagstat (file)
 ```
+#!/bin/bash
+#SBATCH -A uoo04250
+#SBATCH -J bam_stats
+#SBATCH -c 1
+#SBATCH --mem=4G
+#SBATCH -t 01:00:00
+#SBATCH -o flagstat.out
+#SBATCH -e flagstat.err
 
+module purge
+module load SAMtools
+
+cd /nesi/nobackup/uoo04250/ref_snps/bams
+
+for bam in *.bam
+do
+  echo "Stats for $bam"
+  samtools flagstat "$bam" > "${bam%.bam}.flagstat.txt"
+done
+````
+
+
+
+
+
+
+
+```
 ref_map.pl --samples GCA_017639485.1 --popmap popmap.txt -T 8 -o output_refmap populations -P output_refmap --vcf -R 0.2 -M popmap.txt -O output_refmap
 ```
+
+
+
+
+
 
 
 SNP Calling Ref script
