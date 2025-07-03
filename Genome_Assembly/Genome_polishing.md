@@ -1,5 +1,15 @@
 **Genome Polishing**
-will use medaka to polish my draft assembly with my ONT reads before polishing further with my illumina reads
+will use Medaka to polish my draft assembly with my ONT reads before polishing further with my illumina reads
+
+install and activate medika 
+
+```
+python3 -m venv medaka_env
+
+pip install --upgrade pip
+pip install medaka
+source medaka_env/bin/activate
+```
 ```
 #!/bin/bash
 #SBATCH --job-name=Medaka
