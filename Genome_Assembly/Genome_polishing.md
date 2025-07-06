@@ -59,7 +59,11 @@ module load BWA
 
 bwa index assembly.fasta
 ```
+```
+module load SAMtools
 
+bwa mem -t 16 assembly.fasta forward/merged_forward.fastq.gz reverse/merged_reverse.fastq.gz | samtools view -Sb - > ialigned.bam
+```
 ```
 pilon -- assembly.fasta [--frags paired reads.bam] maybe need to do reverse and forward. 
 
