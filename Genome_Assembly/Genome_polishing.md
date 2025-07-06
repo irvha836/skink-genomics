@@ -45,3 +45,16 @@ cat AAH7HYMM5-9684-01-25-01_S1_L001_R2_001.fastq.gz AAH7HYMM5-9684-01-25-02_S2_L
 ```
 
 Convert fastq Illumina reads to bam files to be aligned to genome to polish.
+
+
+
+
+
+
+**Pilon**
+convert paired reads to bam files using bwa aligned to my assembly
+
+```
+pilon -- assembly.fasta [--frags paired reads.bam] maybe need to do reverse and forward. 
+
+--outdir directory pilon_polished
