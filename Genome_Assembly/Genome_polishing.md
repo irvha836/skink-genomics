@@ -55,6 +55,12 @@ Convert fastq Illumina reads to bam files to be aligned to genome to polish.
 convert paired reads to bam files using bwa aligned to my assembly
 
 ```
+module load BWA
+
+bwa index assembly.fasta
+```
+
+```
 pilon -- assembly.fasta [--frags paired reads.bam] maybe need to do reverse and forward. 
 
 --outdir directory pilon_polished
