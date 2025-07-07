@@ -61,7 +61,23 @@ bwa index assembly.fasta
 ```
 ```
 module load SAMtools
+```
 
+samtools wasnt working so set up my own conda environment 
+```
+conda config --add channels defaults
+conda config --add channels bioconda
+conda config --add channels conda-forge
+conda config --set channel_priority strict
+```
+```
+conda create -n pilon-env samtools=1.17 bwa=0.7.17 -y
+```
+
+```
+conda activate pilon-env
+```
+```
 bwa mem -t 16 assembly.fasta forward/merged_forward.fastq.gz reverse/merged_reverse.fastq.gz | samtools view -Sb - > ialigned.bam
 ```
 ```
