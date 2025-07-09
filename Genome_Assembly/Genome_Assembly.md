@@ -170,7 +170,7 @@ cat *_q8.fastq > all_runs_q8.fastq
 ```
 
 **Trimming Q8 filtered reads for adapters and polya/g tails**
-
+used cutadapt v4.4
 ```
 module load cutadapt
 
