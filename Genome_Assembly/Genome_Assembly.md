@@ -169,7 +169,21 @@ then combine all fastq pass files from each run into one (concatenating the file
 cat *_q8.fastq > all_runs_q8.fastq
 ```
 
+**Trimming Q8 filtered reads for adapters and polya/g tails**
 
+```
+module load cutadapt
+
+cutadapt \
+  --cut 10 \
+  -g ^TTTCTGTTGGTGCTGATATTGC \
+  -a TTTCTGTTGGTGCTGATATTGC \
+  -a A{30} -a G{30} \
+  -q 8 \
+  -m 100 \
+  -o all_runs_q8_trimmed.fastq \
+  all_runs_q8.fastq
+```
 
 **FLYE Assembly**
 
