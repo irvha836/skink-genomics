@@ -170,7 +170,9 @@ cat *_q8.fastq > all_runs_q8.fastq
 ```
 
 **Trimming Q8 filtered reads for adapters and polya/g tails**
-used cutadapt v4.4
+used cutadapt v4.4 - initial code only trimmed runs of as or gs at the end not in the middle of the reads. 
+
+TRY FASTP to remove poly g & a or just dont bother as ludo said so we looked using grep to see if there was lots of polyg and polya tails but there wasnt with grep so fast qc is just bugging 
 ```
 module load cutadapt
 
