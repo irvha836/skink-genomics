@@ -43,6 +43,30 @@ cat AAH7HYMM5-9684-01-25-01_S1_L001_R1_001.fastq.gz AAH7HYMM5-9684-01-25-02_S2_L
 
 cat AAH7HYMM5-9684-01-25-01_S1_L001_R2_001.fastq.gz AAH7HYMM5-9684-01-25-02_S2_L001_R2_001.fastq.gz > merged_reverse.fastq.gz
 ```
+when i ran fastqc it showed reads in tray 1403 were low quality so needed to filter them out/remove them and create a new fastqc 
+
+filtered forward reads 
+```
+zcat merged_forward.fastq.gz | awk 'BEGIN {n=0} 
+/^@.*:1403:/ {n=3; next} 
+n > 0 {n--; next} 
+{print}' | gzip > filteredf_reads.fastq.gz
+
+#filtered reverse reads 
+
+zcat merged_reverse.fastq.gz | awk 'BEGIN {n=0} 
+/^@.*:1403:/ {n=3; next} 
+n > 0 {n--; next} 
+{print}' | gzip > filtered_reads.fastq.gz
+```
+then filtered out the random position 6 low quality reads in tray 2202 and 2203 using cut adapt as it was only in the first 6 bp positions so not losing much data  
+
+```
+cutadapt -u 0 -U 6 \
+  -o trimmed_merged_forward.fastq.gz \
+  -p trimmed_merged_reverse.fastq.gz \
+  filtered_forward.fastq.gz filtered_reverse.fastq.gz
+```
 
 Convert fastq Illumina reads to bam files to be aligned to genome to polish.
 
