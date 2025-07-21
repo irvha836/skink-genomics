@@ -104,6 +104,19 @@ conda activate pilon-env
 ```
 bwa mem -t 16 assembly.fasta forward/merged_forward.fastq.gz reverse/merged_reverse.fastq.gz | samtools view -Sb - > ialigned.bam
 ```
+
+it was actually 
+```
+bwa mem -t 16 assembly.fasta trimmed_merged_forward.fastq.gz trimmed_merged_reverse.fastq.gz > aln.sam
+```
+```
+samtools view -bS aln.sam > aln.bam
+```
+```
+samtools sort aln.bam -o aln.sorted.bam
+```
+```
+samtools index aln.sorted.bam
 ```
 pilon -- assembly.fasta [--frags paired reads.bam] maybe need to do reverse and forward. 
 
