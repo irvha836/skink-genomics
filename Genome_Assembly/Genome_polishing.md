@@ -136,7 +136,7 @@ pilon -- assembly.fasta [--frags paired reads.bam] maybe need to do reverse and 
 module load Java/15.0.2
 module load Pilon/1.24-Java-15.0.2
 
-pilon \
+java -Xmx16G -jar $EBROOTPILON/pilon.jar \
   --genome assembly.fasta \
   --frags ialigned.sorted.bam \
   --output pilon_round1 \
@@ -144,6 +144,7 @@ pilon \
   --vcf \
   --changes \
   --threads 16
+
 ```
 
 
