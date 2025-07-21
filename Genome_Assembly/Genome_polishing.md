@@ -121,3 +121,29 @@ samtools index aln.sorted.bam
 pilon -- assembly.fasta [--frags paired reads.bam] maybe need to do reverse and forward. 
 
 --outdir directory pilon_polished
+
+
+```
+#!/bin/bash
+#SBATCH --job-name=pilon_polish
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=32G
+#SBATCH --time=24:00:00
+#SBATCH --output=pilon_%j.out
+#SBATCH --error=pilon_%j.err
+
+module load Java/15.0.2
+module load Pilon/1.24-Java-15.0.2
+
+pilon \
+  --genome assembly.fasta \
+  --frags ialigned.sorted.bam \
+  --output pilon_round1 \
+  --outdir pilon \
+  --vcf \
+  --changes \
+  --threads 16
+```
+
+
