@@ -71,6 +71,21 @@ cutadapt -u 0 -U 6 \
 Convert fastq Illumina reads to bam files to be aligned to genome to polish.
 
 
+identifying weird outlires with bandage
+
+bandage is a software available from https://github.com/rrwick/Bandage/releases
+
+can identify long contigs and isolate sequences for blast from my gfa assembly graph. 
+identified one contig as Serratia liquefaciens. so removed using seqkit 
+
+```
+module load Seqkit
+# Remove by node name
+seqkit grep -v -n -p NODE_edge_4650+_length_5125215_cov_19 assembly.fasta > clean_assembly.fasta
+```
+edge_14531 the other long outlier all came back with reptile hits from blast so decided not to remove. 
+Anolis and Heteronotia) and a chelonian (Stigmochelys).
+
 
 
 
