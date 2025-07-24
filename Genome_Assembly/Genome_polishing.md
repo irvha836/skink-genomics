@@ -81,13 +81,15 @@ identified one contig as Serratia liquefaciens. so removed using seqkit
 ```
 module load Seqkit
 # Remove by node name
-seqkit grep -v -n -p NODE_edge_4650+_length_5125215_cov_19 assembly.fasta > clean_assembly.fasta
+seqkit grep -v -n -p contig_4650 assembly.fasta > clean_assembly.fasta
 ```
 edge_14531 the other long outlier all came back with reptile hits from blast so decided not to remove. 
 Anolis and Heteronotia) and a chelonian (Stigmochelys).
 
-
-
+checked i removed contig 4650 
+```
+grep "contig_4640" clean_assembly.fasta
+```
 
 
 **Pilon**
