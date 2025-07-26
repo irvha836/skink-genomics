@@ -165,3 +165,33 @@ java -Xmx16G -jar $EBROOTPILON/pilon.jar \
 ```
 
 
+```
+
+
+
+#!/bin/bash
+#SBATCH --job-name=pilon_round2
+#SBATCH --time=48:00:00
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=256G
+#SBATCH --output=pilon_round2.out
+#SBATCH --error=pilon_round2.err
+
+# Load modules
+module load Java/1.8.0_144
+module load Pilon/1.24
+
+# Create output directory if it doesn't exist
+mkdir -p pilon
+
+# Run Pilon (Round 2)
+java -Xmx250G -jar $EBROOTPILON/pilon.jar \
+  --genome pilon/pilon_round1.fasta \
+  --frags ialigned.sorted.bam \
+  --output pilon_round2 \
+  --outdir pilon \
+  --fix snps,indels,gaps \
+  --diploid \
+  --vcf
+```
+
