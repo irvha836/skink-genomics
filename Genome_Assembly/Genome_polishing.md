@@ -118,16 +118,10 @@ conda create -n pilon-env samtools=1.17 bwa=0.7.17 -y
 ```
 conda activate pilon-env
 ```
+
+aligning illumina reads to genome (did this twice as had to align again to my new polished genome)
 ```
 bwa mem -t 16 assembly.fasta trimmed_merged_forward.fastq.gz trimmed_merged_reverse.fastq.gz | samtools view -Sb - > ialigned.bam
-```
-
-it was actually 
-```
-bwa mem -t 16 assembly.fasta trimmed_merged_forward.fastq.gz trimmed_merged_reverse.fastq.gz > aln.sam
-```
-```
-samtools view -bS aln.sam > aln.bam
 ```
 ```
 samtools sort aln.bam -o aln.sorted.bam
