@@ -182,6 +182,45 @@ java -Xmx250G -jar $EBROOTPILON/pilon.jar \
   --diploid \
   --vcf
 ```
+had to split polishing for round 2 in half due to memory issues 
+```
+module load SAMtools
+samtools faidx pilon_round1.fasta
+cut -f1 pilon_round1.fasta.fai > all_scaffolds.txt
+split -n l/2 all_scaffolds.txt scaffolds_
+awk '{print $1"\t0\t1000000000"}' scaffolds_aa > targets1.bed
+awk '{print $1"\t0\t1000000000"}' scaffolds_ab > targets2.bed
+```
+
+
+
+
+
+
+
+
+
+#!/bin/bash
+#SBATCH --job-name=pilon_round2
+#SBATCH --output=pilon_round2v2b.out
+#SBATCH --error=pilon_round2v2b.err
+#SBATCH --time=24:00:00
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=256G
+
+PILON_JAR=~/pilon_local/bin/pilon.jar
+OUT_PREFIX=pilon_round2b
+
+cd /nesi/nobackup/uoo04250/genome_assembly/Illumina/pilon
+
+java -Xmx210G -jar $PILON_JAR \
+  --genome pilon_round1.fasta \
+  --frags r1aln.sorted.bam \
+  --output $OUT_PREFIX \
+  --vcf \
+  --changes \
+  --diploid \
+  --targets targets2.bed
 
 
 
