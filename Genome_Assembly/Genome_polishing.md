@@ -183,3 +183,33 @@ java -Xmx250G -jar $EBROOTPILON/pilon.jar \
   --vcf
 ```
 
+
+
+
+**BUSCO POLISH**
+```
+#!/bin/bash
+#SBATCH --job-name=busco_compare
+#SBATCH --time=24:00:00
+#SBATCH --cpus-per-task=32
+#SBATCH --mem=128G
+#SBATCH --output=busco_compare_%j.out
+#SBATCH --error=busco_compare_%j.err
+
+cd /home/irvha836/uoo04250/genome_assembly/Illumina/pilon
+
+# Load BUSCO via Apptainer
+apptainer exec ./busco_5.8.2--pyhdfd78af_0.sif \
+busco -i pilon_round1.fasta \
+-l sauropsida_odb10 \
+-o busco_round1 \
+-m genome \
+--cpu 16 -f
+
+apptainer exec ./busco_5.8.2--pyhdfd78af_0.sif \
+busco -i pilon_round2.fasta \
+-l sauropsida_odb10 \
+-o busco_round2 \
+-m genome \
+--cpu 16 -f
+```
