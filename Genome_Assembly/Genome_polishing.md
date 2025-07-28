@@ -164,7 +164,7 @@ java -Xmx16G -jar $EBROOTPILON/pilon.jar \
 #SBATCH --job-name=pilon_round2
 #SBATCH --time=24:00:00
 #SBATCH --cpus-per-task=1
-#SBATCH --mem=256G
+#SBATCH --mem=512G
 #SBATCH --output=pilon_round2.out
 #SBATCH --error=pilon_round2.err
 
@@ -173,7 +173,7 @@ module load Java/1.8.0_144
 module load Pilon/1.24
 
 # Run Pilon (Round 2)
-java -Xmx250G -jar $EBROOTPILON/pilon.jar \
+java -Xmx480G -jar $EBROOTPILON/pilon.jar \
   --genome pilon_round1.fasta \
   --frags r1aln.sorted.bam \
   --output pilon_round2 \
@@ -244,7 +244,17 @@ busco -i pilon_round1.fasta \
 -o busco_round1 \
 -m genome \
 --cpu 16 -f
+```
+```
+#!/bin/bash
+#SBATCH --job-name=busco_compare
+#SBATCH --time=24:00:00
+#SBATCH --cpus-per-task=32
+#SBATCH --mem=128G
+#SBATCH --output=busco_compare_%j.out
+#SBATCH --error=busco_compare_%j.err
 
+cd /home/irvha836/uoo04250/genome_assembly/Illumina/pilon
 apptainer exec ./busco_5.8.2--pyhdfd78af_0.sif \
 busco -i pilon_round2.fasta \
 -l sauropsida_odb10 \
