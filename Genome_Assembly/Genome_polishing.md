@@ -262,3 +262,40 @@ busco -i pilon_round2.fasta \
 -m genome \
 --cpu 16 -f
 ```
+
+
+
+
+
+**Double Check of Completness using merqury** 
+
+#!/bin/bash
+#SBATCH --job-name=merqury_run
+#SBATCH --output=merqury_run.out
+#SBATCH --error=merqury_run.err
+#SBATCH --time=12:00:00
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
+
+module load Merqury/1.3-Miniconda3
+
+# Inputs
+trimmed_merged_forward.fastq.gz
+trimmed_merged_reverse.fastq.gz
+ASSEMBLY=clean_assembly.fasta
+K=21
+
+# Outputs
+READ_KMER=read_k${K}.meryl
+ASM_KMER=asm_k${K}.meryl
+MERQURY_OUT=merqury_output
+
+# Step 1: Make k-mers from reads
+meryl count k=$K output $READ_KMER $READ_R1 $READ_R2
+
+# Step 2: Make k-mers from assembly
+meryl count k=$K output $ASM_KMER $ASSEMBLY
+
+# Step 3: Run Merqury
+merqury.sh $READ_KMER $ASSEMBLY $MERQURY_OUT
+
