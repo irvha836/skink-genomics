@@ -27,12 +27,32 @@ NPROC=16
 
 # Set paths to input files and output directory
 BASECALLS=/nesi/nobackup/uoo04250/genome_assembly/filtered_reads/all_runs_q8.fastq
-DRAFT=/nesi/nobackup/uoo04250/genome_assembly/FLYE/FLYEQ8/assembly.fasta
+DRAFT=/nesi/nobackup/uoo04250/genome_assembly/Illumina/clean_assembly.fasta
 OUTDIR=/nesi/nobackup/uoo04250/genome_assembly/MEDAKA/MedakaONT
 
 # Run Medaka consensus polishing
 medaka_consensus -i ${BASECALLS} -d ${DRAFT} -o ${OUTDIR} -t ${NPROC} -m dna_r10.4.1_e8.2_400bps_sup
 ```
+
+# Purge Dups 
+
+need to align my ONT reads to the new consensus fasta alignment produced by medaka
+```
+#Step 1: Align ONT reads to the consensus genome
+minimap2 -x map-ont -t 16 consensus.fasta all_runs_q8_trimmed.fastq > ONTaligned.sam
+#Step 2: Convert SAM to BAM
+samtools view -Sb ONTaligned.sam > ONTaligned.bam
+#Step 3: Sort BAM
+samtools sort -@ 16 -o ONTaligned.sorted.bam ONTaligned.bam
+#Step 4: Index BAM
+samtools index ONTaligned.sorted.bam
+```
+```
+module load purge_dups
+pbcstat ONTaligned.sorted.bam
+```
+
+
 
 
 **Polishing with Illumina**
