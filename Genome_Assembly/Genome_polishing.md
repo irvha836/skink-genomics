@@ -47,6 +47,11 @@ samtools sort -@ 16 -o ONTaligned.sorted.bam ONTaligned.bam
 #Step 4: Index BAM
 samtools index ONTaligned.sorted.bam
 ```
+ran into secondary and suplimentary sequences cloging up purge dups so job wasnt running so had to refilter my sorted alignmed bam to only include primary alignments
+```
+module load SAMtools
+samtools view -F 0x900 -b ONTaligned.sorted.bam > ONTaligned.primary.bam
+```
 ```
 module load purge_dups
 pbcstat ONTaligned.sorted.bam
