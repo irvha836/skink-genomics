@@ -56,8 +56,40 @@ samtools view -F 0x900 -b ONTaligned.sorted.bam > ONTaligned.primary.bam
 module load purge_dups
 pbcstat ONTaligned.sorted.bam
 ```
+generate histogram of coverage to purge high coverage duplicate contigs to leave me with only the primary assembly. 
+```
+module load SAMtools
+samtools depth ONTaligned.sorted.bam | awk '{counts[int($3/10)*10]++} END {for (cov in counts) print cov, counts[cov]}' > coverage.hist
+```
+generate coverage.txt file with 500 10000 and 300000 as my low mid and high coverage depth. 
 
+run purge dups
+```
+#!/bin/bash
+#SBATCH --job-name=purge_dups
+#SBATCH --time=12:00:00
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
+#SBATCH --output=purge_dups.out
+#SBATCH --error=purge_dups.err
 
+# Load required modules
+module load minimap2    
+module load purge_dups      
+
+# Run pipeline
+split_fa consensus.fasta > split.fasta
+
+minimap2 -x asm5 -DP -t 8 split.fasta split.fasta | gzip -c - > self.paf.gz
+
+purge_dups -2 -T cutoffs.txt -c coverage.hist self.paf.gz > dups.bed
+
+get_seqs dups.bed split.fasta > purged.fasta
+```
+split_fa	Format your genome contigs into one-line FASTA entries
+minimap2	Align the genome to itself to detect duplicates
+purge_dups	Find and flag likely redundant/haplotig regions
+get_seqs	Remove flagged duplicates and output a "purged" genome
 
 
 **Polishing with Illumina**
