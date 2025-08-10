@@ -17,15 +17,18 @@ module load Perl/5.34.1-GCC-11.3.0
 module load minimap2/2.24-GCC-11.3.0
 module load SAMtools/1.13-GCC-9.2.0
 
-# ====== User variables ======
-ASSEMBLY="purged_5kb.fa"                # Assembly FASTA file
-LONGREADS="all_runs_q8_trimmed.fasta.gz" # Long reads FASTA/FASTQ.gz
-ANCHOR=250                               # Anchoring length
-IDENTITY=0.85                            # Minimum identity
-GRACE=500                                # Grace length
-THREADS=12                               # Threads to use
-READTYPE="ont"                           # Long read type: ont / map-pb / etc.
-SAMTOOLS_PATH="$(which samtools)"        # Auto-detect samtools path
+# ====== Paths ======
+ASSEMBLY="purged_5kb.fa"                  # Assembly FASTA file
+LONGREADS="all_runs_q8_trimmed.fasta.gz"  # Long reads file
+ANCHOR=250                                # Anchoring length
+IDENTITY=0.85                             # Minimum identity
+GRACE=500                                 # Grace length
+THREADS=12                                # Threads to use
+READTYPE="ont"                            # Long read type: ont / map-pb / etc.
+SAMTOOLS_PATH="$(which samtools)"         # Auto-detect samtools path
+
+# Full path to local RAILS/Cobbler executables folder
+RAILS_DIR="/nesi/nobackup/uoo04250/genome_assembly/gapclosing/RAILS/bin"
 
 # ====== Step 1: Reformat FASTA ======
 echo "Reformatting assembly FASTA..."
@@ -38,25 +41,28 @@ echo "$LONGREADS" > longreads.fof
 echo "Running Cobbler..."
 minimap2 -x map-"$READTYPE" -t "$THREADS" "${ASSEMBLY%.fa*}-formatted.fa" "$LONGREADS" \
     | "$SAMTOOLS_PATH" view -bS - \
-    | cobbler.pl -f "${ASSEMBLY%.fa*}-formatted.fa" \
-                 -s stream \
-                 -d "$ANCHOR" \
-                 -i "$IDENTITY" \
-                 -g "$GRACE" \
-                 -q longreads.fof \
-                 -p "$SAMTOOLS_PATH"
+    | perl "$RAILS_DIR/cobbler.pl" \
+        -f "${ASSEMBLY%.fa*}-formatted.fa" \
+        -s stream \
+        -d "$ANCHOR" \
+        -i "$IDENTITY" \
+        -g "$GRACE" \
+        -q longreads.fof \
+        -p "$SAMTOOLS_PATH"
 
 # ====== Step 4: RAILS ======
 echo "Running RAILS..."
 minimap2 -x map-"$READTYPE" -t "$THREADS" "${ASSEMBLY%.fa*}-formatted.fa" "$LONGREADS" \
     | "$SAMTOOLS_PATH" view -bS - \
-    | RAILS -f "${ASSEMBLY%.fa*}-formatted.fa" \
-            -s stream \
-            -d "$ANCHOR" \
-            -i "$IDENTITY" \
-            -g "$GRACE" \
-            -q longreads.fof \
-            -p "$SAMTOOLS_PATH"
+    | perl "$RAILS_DIR/RAILS" \
+        -f "${ASSEMBLY%.fa*}-formatted.fa" \
+        -s stream \
+        -d "$ANCHOR" \
+        -i "$IDENTITY" \
+        -g "$GRACE" \
+        -q longreads.fof \
+        -p "$SAMTOOLS_PATH"
 
 echo "RAILS+Cobbler minimap2 streaming run complete."
+
 ```
