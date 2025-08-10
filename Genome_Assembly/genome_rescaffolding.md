@@ -19,7 +19,7 @@ module load SAMtools/1.13-GCC-9.2.0
 
 # ====== Paths ======
 ASSEMBLY="purged_5kb.fa"                  # Assembly FASTA file
-LONGREADS="all_runs_q8_trimmed.fasta.gz"  # Long reads file
+LONGREADS="all_runs_q8_trimmed.fastq.gz"  # Long reads file
 ANCHOR=250                                # Anchoring length
 IDENTITY=0.85                             # Minimum identity
 GRACE=500                                 # Grace length
