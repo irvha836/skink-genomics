@@ -66,3 +66,31 @@ minimap2 -x map-"$READTYPE" -t "$THREADS" "${ASSEMBLY%.fa*}-formatted.fa" "$LONG
 echo "RAILS+Cobbler minimap2 streaming run complete."
 
 ```
+
+# lrgapcloser 
+
+download and extract the tar files from the gapcloser github
+```
+wget https://github.com/CAFS-bioinformatics/LR_Gapcloser/archive/refs/heads/master.tar.gz -O LR_Gapcloser.tar.gz
+tar -zxvf LR_Gapcloser.tar.gz
+```
+
+#!/bin/bash -e
+#SBATCH --cpus-per-task=12
+#SBATCH --job-name=lr_gapc
+#SBATCH --mem=100G
+#SBATCH --time=24:00:00
+#SBATCH --output=%x_%j.out
+#SBATCH --error=%x_%j.err
+#SBATCH --hint=nomultithread
+
+module load BWA/0.7.17-GCC-11.3.0
+
+export PATH=$PATH:/nesi/nobackup/uoo04250/genome_assembly/gapclosing/lrcloser/LR_Gapcloser-master/src
+
+sh LR_Gapcloser.sh \
+  -i /path/to/scaffolds_with_gaps.fasta \
+  -l /path/to/long_reads_corrected.fasta \
+  -s n \
+  -t ${SLURM_CPUS_PER_TASK} \
+  -r 10
