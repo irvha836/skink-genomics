@@ -94,9 +94,8 @@ seqtk seq -a all_runs_q8_trimmed.fastq.gz > all_runs_q8_trimmed.fasta
 module load BWA/0.7.17-GCC-11.3.0
 module load Perl/5.34.1-GCC-11.3.0
 
-export PATH=$PATH:/nesi/nobackup/uoo04250/genome_assembly/gapclosing/lrcloser/LR_Gapcloser-master/src
+bash /nesi/nobackup/uoo04250/genome_assembly/gapclosing/lrcloser/LR_Gapcloser-master/src
 
-# Run LR_Gapcloser script directly if executable
 LR_Gapcloser.sh \
   -i purged_5kb.fa \
   -l all_runs_q8_trimmed.fasta \
@@ -104,4 +103,25 @@ LR_Gapcloser.sh \
   -t 12 \
   -o LR_GapCloser_output
 ```
+
+ran it twice just to be thorough only found 41 gaps and the longest gap was only 23 bases long
+```
+#!/bin/bash -e
+#SBATCH --cpus-per-task=12
+#SBATCH --job-name=lr_gapc
+#SBATCH --mem=100G
+#SBATCH --time=24:00:00
+#SBATCH --output=%x_%j.out
+#SBATCH --error=%x_%j.err
+#SBATCH --hint=nomultithread
+module load BWA/0.7.17-GCC-11.3.0
+module load Perl/5.34.1-GCC-11.3.0
+bash /nesi/nobackup/uoo04250/genome_assembly/gapclosing/lrcloser/LR_Gapcloser-master/src/LR_Gapcloser.sh \
+  -i gapclosed.fasta \
+  -l all_runs_q8_trimmed.fasta \
+  -s n \
+  -t 12 \
+  -o LR_GapCloser_output_run2
+```
+
 
