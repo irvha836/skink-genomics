@@ -75,6 +75,13 @@ wget https://github.com/CAFS-bioinformatics/LR_Gapcloser/archive/refs/heads/mast
 tar -zxvf LR_Gapcloser.tar.gz
 ```
 
+needed to convert fastq reads to fasta
+```
+seqtk seq -a all_runs_q8_trimmed.fastq.gz > all_runs_q8_trimmed.fasta
+```
+
+
+```
 #!/bin/bash -e
 #SBATCH --cpus-per-task=12
 #SBATCH --job-name=lr_gapc
@@ -85,12 +92,16 @@ tar -zxvf LR_Gapcloser.tar.gz
 #SBATCH --hint=nomultithread
 
 module load BWA/0.7.17-GCC-11.3.0
+module load Perl/5.34.1-GCC-11.3.0
 
 export PATH=$PATH:/nesi/nobackup/uoo04250/genome_assembly/gapclosing/lrcloser/LR_Gapcloser-master/src
 
-sh LR_Gapcloser.sh \
-  -i /path/to/scaffolds_with_gaps.fasta \
-  -l /path/to/long_reads_corrected.fasta \
+# Run LR_Gapcloser script directly if executable
+LR_Gapcloser.sh \
+  -i purged_5kb.fa \
+  -l all_runs_q8_trimmed.fasta \
   -s n \
-  -t ${SLURM_CPUS_PER_TASK} \
-  -r 10
+  -t 12 \
+  -o LR_GapCloser_output
+```
+
