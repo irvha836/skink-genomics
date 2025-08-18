@@ -1,5 +1,8 @@
-**Genome Polishing**
-will use Medaka to polish my draft assembly with my ONT reads before polishing further with my illumina reads
+# Genome Polishing
+
+## Medaka
+
+need to run medaka which uses my filtered ONT reads to polish my assembly before i polish with illumina reads using pilon
 
 install and activate medika 
 
