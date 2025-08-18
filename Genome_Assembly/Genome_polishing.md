@@ -208,7 +208,38 @@ java -Xmx400G -jar $PILON_JAR \
   --changes \
   --diploid
 ```
+now index to round1 genome 
+```
+#!/bin/bash -e
+#SBATCH --job-name=align_gapclosed
+#SBATCH --cpus-per-task=12
+#SBATCH --mem=100G
+#SBATCH --time=24:00:00
+#SBATCH --output=%x_%j.out
+#SBATCH --error=%x_%j.err
+
+# Load modules
+module load BWA/0.7.17-GCC-11.3.0
+module load SAMtools/1.16.1-GCC-11.3.0
+
+# Input files
+GENOME=pilongaps.fasta
+READS1=trimmed_merged_forward.fastq.gz
+READS2=trimmed_merged_reverse.fastq.gz
+OUTBAM=alnr1_gapclosed.sorted.bam
+
+# Index genome for BWA
+bwa index $GENOME
+
+# Align and convert to sorted BAM
+bwa mem -t $SLURM_CPUS_PER_TASK $GENOME $READS1 $READS2 | \
+    samtools sort -@ $SLURM_CPUS_PER_TASK -o $OUTBAM -
+
+# Index BAM
+samtools index $OUTBAM
 Then run a second time for further polishing
+```
+
 
 ```
 #!/bin/bash
