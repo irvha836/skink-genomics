@@ -94,7 +94,7 @@ get_seqs	Remove flagged duplicates and output a "purged" genome
 
 **Polishing with Illumina**
 
-in my illumina data folder 
+prepping illumina reads for polishing (illumina folder) 
 ```
 cat AAH7HYMM5-9684-01-25-01_S1_L001_R1_001.fastq.gz AAH7HYMM5-9684-01-25-02_S2_L001_R1_001.fastq.gz > merged_forward.fastq.gz
 
@@ -127,7 +127,6 @@ cutadapt -u 0 -U 6 \
 
 Convert fastq Illumina reads to bam files to be aligned to genome to polish.
 
-
 identifying weird outlires with bandage
 
 bandage is a software available from https://github.com/rrwick/Bandage/releases
@@ -150,71 +149,63 @@ grep "contig_4640" clean_assembly.fasta
 
 
 **Pilon**
-convert paired reads to bam files using bwa aligned to my assembly
+convert paired illumina reads to bam files using bwa aligned to my assembly (gapclosed.fasta)
 
 ```
-module load BWA
+#!/bin/bash -e
+#SBATCH --job-name=align_gapclosed
+#SBATCH --cpus-per-task=12
+#SBATCH --mem=100G
+#SBATCH --time=24:00:00
+#SBATCH --output=%x_%j.out
+#SBATCH --error=%x_%j.err
 
-bwa index assembly.fasta
-```
-```
-module load SAMtools
-```
+# Load modules
+module load BWA/0.7.17-GCC-11.3.0
+module load SAMtools/1.16.1-GCC-11.3.0
 
-samtools wasnt working so set up my own conda environment 
-```
-conda config --add channels defaults
-conda config --add channels bioconda
-conda config --add channels conda-forge
-conda config --set channel_priority strict
-```
-```
-conda create -n pilon-env samtools=1.17 bwa=0.7.17 -y
-```
+# Input files
+GENOME=gapclosed.fasta
+READS1=trimmed_merged_forward.fastq.gz
+READS2=trimmed_merged_reverse.fastq.gz
+OUTBAM=aln_gapclosed.sorted.bam
 
-```
-conda activate pilon-env
-```
+# Index genome for BWA
+bwa index $GENOME
 
-aligning illumina reads to genome (did this twice as had to align again to my new polished genome)
-```
-bwa mem -t 16 assembly.fasta trimmed_merged_forward.fastq.gz trimmed_merged_reverse.fastq.gz | samtools view -Sb - > ialigned.bam
-```
-```
-samtools sort aln.bam -o aln.sorted.bam
-```
-```
-samtools index aln.sorted.bam
-```
-pilon -- assembly.fasta [--frags paired reads.bam] maybe need to do reverse and forward. 
+# Align and convert to sorted BAM
+bwa mem -t $SLURM_CPUS_PER_TASK $GENOME $READS1 $READS2 | \
+    samtools sort -@ $SLURM_CPUS_PER_TASK -o $OUTBAM -
 
---outdir directory pilon_polished
-
-
+# Index BAM
+samtools index $OUTBAM
+```
+now run pilon
 ```
 #!/bin/bash
-#SBATCH --job-name=pilon_polish
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=16
-#SBATCH --mem=32G
+#SBATCH --job-name=pilon_round2
+#SBATCH --output=pilon_round2v2.out
+#SBATCH --error=pilon_round2v2.err
 #SBATCH --time=24:00:00
-#SBATCH --output=pilon_%j.out
-#SBATCH --error=pilon_%j.err
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=512G
 
-module load Java/15.0.2
-module load Pilon/1.24-Java-15.0.2
+# Define paths
+PILON_JAR=~/pilon_local/bin/pilon.jar
+GENOME=gapclosed.fasta
+BAM=aln_gapclosed.sorted.bam
+OUT_PREFIX=pilongaps
 
-java -Xmx16G -jar $EBROOTPILON/pilon.jar \
-  --genome assembly.fasta \
-  --frags ialigned.sorted.bam \
-  --output pilon_round1 \
-  --outdir pilon \
+# Run Pilon
+java -Xmx400G -jar $PILON_JAR \
+  --genome $GENOME \
+  --frags $BAM \
+  --output $OUT_PREFIX \
   --vcf \
   --changes \
-  --threads 16
-
+  --diploid
 ```
-
+Then run a second time for further polishing
 
 ```
 #!/bin/bash
@@ -239,6 +230,26 @@ java -Xmx480G -jar $EBROOTPILON/pilon.jar \
   --diploid \
   --vcf
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 had to split polishing for round 2 in half due to memory issues 
 ```
 module load SAMtools
