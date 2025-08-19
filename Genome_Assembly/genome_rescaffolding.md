@@ -124,4 +124,60 @@ bash /nesi/nobackup/uoo04250/genome_assembly/gapclosing/lrcloser/LR_Gapcloser-ma
   -o LR_GapCloser_output_run2
 ```
 
+# repeat masker
+
+after polishing 2 rounds with pilon i ran repeat masker to finish my genome assembly
+
+obtain the repeat masker libraries and files from github
+```
+git clone https://github.com/Dfam-consortium/RepeatMasker.git
+cd RepeatMasker
+```
+then get additional file and make it executable 
+
+```
+wget https://github.com/Benson-Genomics-Lab/TRF/releases/download/v4.09.1/trf409.linux64
+```
+mkdir -p ~/bin
+mv trf409.linux64 ~/bin/trf
+chmod +x ~/bin/trf
+```
+actual path was /home/irvha836/bin/trf
+then configure my library
+```
+perl ./configure
+```
+needed another library containing lipsaurid data to align to my genome as its the closest taxonomic group and uncompress it 
+```
+wget -c https://www.dfam.org/releases/current/families/FamDB/dfam39_full.12.h5.gz
+gunzip dfam39_full.12.h5.gz
+```
+
+
+
+identified which group repeatmasker had available clsoest to skinks being lepidosauria
+```
+#!/bin/bash
+#SBATCH --job-name=repeatmasker
+#SBATCH --output=repeatmasker_%j.out
+#SBATCH --error=repeatmasker_%j.err
+#SBATCH --time=48:00:00       # adjust based on genome size
+#SBATCH --cpus-per-task=12
+#SBATCH --mem=100G             # adjust if needed
+
+module purge
+module load RMBlast/2.14.1-GCC-12.3.0
+module load Perl
+module load Python/3.11.6-foss-2023a
+
+export PATH=/home/irvha836/bin:$PATH
+
+# run RepeatMasker
+perl /nesi/nobackup/uoo04250/genome_assembly/repeatmask/RepeatMasker/RepeatMasker \
+  -pa 12 \
+  -species "lepidosauria" \
+  -dir masked_output \
+  -xsmall \
+  pilongapsr2.fasta
+```
 
