@@ -172,12 +172,12 @@ module load Python/3.11.6-foss-2023a
 
 export PATH=/home/irvha836/bin:$PATH
 
-# run RepeatMasker
-perl /nesi/nobackup/uoo04250/genome_assembly/repeatmask/RepeatMasker/RepeatMasker \
+  perl /nesi/nobackup/uoo04250/genome_assembly/repeatmask/RepeatMasker/RepeatMasker \
   -pa 12 \
-  -species "lepidosauria" \
+  -lib /nesi/nobackup/uoo04250/genome_assembly/repeatmask/RepeatMasker/lepidosauria.lib \
   -dir masked_output \
   -xsmall \
   pilongapsr2.fasta
+
 ```
 
