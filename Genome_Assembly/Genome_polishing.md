@@ -273,35 +273,6 @@ java -Xmx480G -jar $EBROOTPILON/pilon.jar \
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-had to split polishing for round 2 in half due to memory issues 
-```
-module load SAMtools
-samtools faidx pilon_round1.fasta
-cut -f1 pilon_round1.fasta.fai > all_scaffolds.txt
-split -n l/2 all_scaffolds.txt scaffolds_
-awk '{print $1"\t0\t1000000000"}' scaffolds_aa > targets1.bed
-awk '{print $1"\t0\t1000000000"}' scaffolds_ab > targets2.bed
-```
-
-
-
-
-
-
-
-
-
 #!/bin/bash
 #SBATCH --job-name=pilon_round2
 #SBATCH --output=pilon_round2v2b.out
@@ -384,7 +355,7 @@ module load Merqury/1.3-Miniconda3
 # Inputs
 trimmed_merged_forward.fastq.gz
 trimmed_merged_reverse.fastq.gz
-ASSEMBLY=clean_assembly.fasta
+ASSEMBLY=whitakergenome.fasta
 K=21
 
 # Outputs
