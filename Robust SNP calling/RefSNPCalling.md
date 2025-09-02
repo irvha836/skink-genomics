@@ -39,3 +39,8 @@ do
     samtools index bam/${sample}.bam
 done
 ```
+```
+module load Stacks/2.67-GCC-12.3.0
+gstacks -I bam/ -M popmap.txt -O gstacks_out/ -t 16
+populations -P gstacks_out/ -M popmap.txt -O populations_out/ --vcf
+```
