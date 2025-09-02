@@ -12,7 +12,7 @@ cutadapt -j 8 -a CCGAGATCGGAAGAGC   -q 25 -o  SQ2252_HMGN2DRX3_s_2_trimmed.fastq
 cd raw
 ln -s ../*trimmed* .
 ```
-
+# Demultiplexing 
 ```
 module load Stacks
 process_radtags  -p raw/ -o ./samples/ -b barcodes.txt -e pstI  -c -q --inline_null -r
