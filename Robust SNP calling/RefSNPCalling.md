@@ -17,3 +17,25 @@ ln -s ../*trimmed* .
 module load Stacks
 process_radtags  -p raw/ -o ./samples/ -b barcodes.txt -e pstI  -c -q --inline_null -r
 ```
+
+```
+module load SAMtools
+module load BWA 
+module load Stacks
+```
+
+```
+mkdir -p bam
+
+for fq in samples/*.fq.gz
+do
+    sample=$(basename "$fq" .fq.gz)   # strip extension
+    echo "Aligning $sample ..."
+    
+    bwa mem -t 8 whitakergenome.fasta "$fq" \
+    | samtools view -bS - \
+    | samtools sort -o bam/${sample}.bam
+    
+    samtools index bam/${sample}.bam
+done
+```
