@@ -44,3 +44,11 @@ module load Stacks/2.67-GCC-12.3.0
 gstacks -I bam/ -M popmap.txt -O gstacks_out/ -t 16
 populations -P gstacks_out/ -M popmap.txt -O populations_out/ --vcf
 ```
+
+```
+module load VCFtools
+vcftools --vcf populations_out/populations.snps.vcf --missing-indv
+```
+```
+sort -k 4n out.imiss > out.imiss.sorted
+```
