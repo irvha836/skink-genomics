@@ -103,3 +103,12 @@ iqtree2 -nt 16 \
   -st DNA \
   -bb 1000 \
   -pre robust_filtered_snp
+```
+
+
+General citation for IQ-TREE 2:
+
+B.Q. Minh, H.A. Schmidt, O. Chernomor, D. Schrempf, M.D. Woodhams, A. von Haeseler, R. Lanfear (2020) IQ-TREE 2: New models and efficient methods for phylogenetic inference in the genomic era. Mol. Biol. Evol., 37:1530-1534. https://doi.org/10.1093/molbev/msaa015
+
+
+
