@@ -52,3 +52,21 @@ vcftools --vcf populations_out/populations.snps.vcf --missing-indv
 ```
 sort -k 4n out.imiss > out.imiss.sorted
 ```
+```
+populations -P gstacks_out/ -M popmap.txt \
+  --max-obs-het 0.65 -R 0.75 \
+  --write-single-snp -O populations_filtered
+```
+```
+vcftools --vcf populations.snps.vcf \
+  --minDP 3 \
+  --maf 0.005 \
+  --max-missing 0.6 \
+  --remove-indv A04 \
+  --remove-indv F10 \
+  --remove-indv D04 \
+  --remove-indv F25 \
+  --remove-indv DN75 \
+  --remove-indv PS44 \
+  --recode --out robust_filtered_pedigree
+```
