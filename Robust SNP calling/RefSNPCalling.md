@@ -18,6 +18,7 @@ module load Stacks
 process_radtags  -p raw/ -o ./samples/ -b barcodes.txt -e pstI  -c -q --inline_null -r
 ```
 
+# indexing
 ```
 module load SAMtools
 module load BWA 
@@ -39,12 +40,20 @@ do
     samtools index bam/${sample}.bam
 done
 ```
+# SNP calling 
 ```
 module load Stacks/2.67-GCC-12.3.0
 gstacks -I bam/ -M popmap.txt -O gstacks_out/ -t 16
 populations -P gstacks_out/ -M popmap.txt -O populations_out/ --vcf
 ```
+Stacks Manual
+Julian Catchen1, Nicolas Rochette1, Angel G. Rivera-Colón1,2, William A. Cresko2, Paul A. Hohenlohe3, Angel Amores4, Susan Bassham2, John Postlethwait4
 
+1Department of Evolution, Ecology, and Behavior
+University of Illinois at Urbana-Champaign
+Urbana, Illinois, 61820
+USA
+# filtering
 ```
 module load VCFtools
 vcftools --vcf populations_out/populations.snps.vcf --missing-indv
