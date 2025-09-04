@@ -70,3 +70,36 @@ vcftools --vcf populations.snps.vcf \
   --remove-indv PS44 \
   --recode --out robust_filtered_pedigree
 ```
+
+# phylogeny 
+```
+git clone https://github.com/edgardomortiz/vcf2phylip.git
+
+# Go into the directory
+cd vcf2phylip
+```
+```
+module load python
+
+python3 vcf2phylip.py -i robust_filtered_pedigree.recode.vcf -o robust_filtered_pedigree.phy
+```
+run IQtree note i also ran without asc model to compare 
+```
+#!/bin/bash -e
+#SBATCH --job-name=iqtree_snp
+#SBATCH --output=iqtree_snp.out
+#SBATCH --error=iqtree_snp.err
+#SBATCH --time=24:00:00
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=64G
+
+# Load IQ-TREE module
+module load IQ-TREE
+
+# Run IQ-TREE SNP-aware phylogeny
+iqtree2 -nt 16 \
+  -s robust_filtered_pedigree.recode.min4.phy \
+  -m GTR+ASC+G \
+  -st DNA \
+  -bb 1000 \
+  -pre robust_filtered_snp
