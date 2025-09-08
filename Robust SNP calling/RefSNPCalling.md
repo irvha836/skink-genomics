@@ -63,7 +63,7 @@ sort -k 4n out.imiss > out.imiss.sorted
 ```
 ```
 populations -P gstacks_out/ -M popmap.txt \
-  --max-obs-het 0.65 -R 0.75 \
+  --max-obs-het 0.65 -R 0.70 \
   --write-single-snp -O populations_filtered
 ```
 ```
