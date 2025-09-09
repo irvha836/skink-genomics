@@ -67,6 +67,15 @@ populations -P gstacks_out/ -M popmap.txt \
 -O populations_filtered
 ```
 ```
+mkdir -p populations_filtered2
+populations -P gstacks_out/ \
+-M popmap.txt \
+-O populations_filtered2/ \
+--vcf \
+--max-obs-het 0.6 \
+-R 0.6
+```
+```
 populations -P gstacks_out/ -M popmap.txt \
   --write-single-snp --max-observed-het 0.65 -R 0.7 \
   -O populations_filteredv2
@@ -85,6 +94,19 @@ vcftools --vcf populations.snps.vcf \
   --recode --out robust_filtered_pedigree
 ```
 
+```
+vcftools --vcf populations.snps.vcf \
+  --minDP 3 \
+  --max-missing 0.6 \
+  --remove-indv A04 \
+  --remove-indv F10 \
+  --remove-indv D04 \
+  --remove-indv F25 \
+  --remove-indv DN75 \
+  --remove-indv PS44 \
+  --remove-indv F13 \             
+  --recode --out robust_filtered_pedigreev2
+```
 # phylogeny 
 ```
 git clone https://github.com/edgardomortiz/vcf2phylip.git
