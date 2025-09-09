@@ -61,15 +61,14 @@ vcftools --vcf populations_out/populations.snps.vcf --missing-indv
 ```
 sort -k 4n out.imiss > out.imiss.sorted
 ```
+can rerun this without write single snp and max observe het and R
 ```
 populations -P gstacks_out/ -M popmap.txt \
-  --max-obs-het 0.65 -R 0.70 \
-  --write-single-snp -O populations_filtered
+-O populations_filtered
 ```
 ```
 vcftools --vcf populations.snps.vcf \
   --minDP 3 \
-  --maf 0.005 \
   --max-missing 0.6 \
   --remove-indv A04 \
   --remove-indv F10 \
