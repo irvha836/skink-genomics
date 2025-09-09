@@ -67,6 +67,12 @@ populations -P gstacks_out/ -M popmap.txt \
 -O populations_filtered
 ```
 ```
+populations -P gstacks_out/ -M popmap.txt \
+  --write-single-snp --max-observed-het 0.65 -R 0.7 \
+  -O populations_filteredv2
+```
+got me 3789
+```
 vcftools --vcf populations.snps.vcf \
   --minDP 3 \
   --max-missing 0.6 \
