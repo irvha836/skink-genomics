@@ -75,12 +75,13 @@ populations -P gstacks_out/ \
 --max-obs-het 0.6 \
 -R 0.6
 ```
+got me 4403 SNPs
 ```
 populations -P gstacks_out/ -M popmap.txt \
   --write-single-snp --max-observed-het 0.65 -R 0.7 \
   -O populations_filteredv2
 ```
-got me 3789
+got me 2064 SNPs
 ```
 vcftools --vcf populations.snps.vcf \
   --minDP 3 \
