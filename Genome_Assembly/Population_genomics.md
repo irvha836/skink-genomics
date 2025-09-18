@@ -213,7 +213,41 @@ cat skink2m.psmc round-*.psmc > skink_bootstrap.psmc
 psmc_plot.pl -R -u 1.17e-08 -g 6.5 -p skink_bootstrap skink_bootstrap.psmc
 ```
 
+first code ran out of time so i used parallel to generate more bootstraps at the same time
 
+```
+#!/bin/bash -e
+#SBATCH --cpus-per-task  6
+#SBATCH --job-name       Skink_PSMC_bootstrap_resume
+#SBATCH --mem            32G
+#SBATCH --time           24:00:00
+#SBATCH --account        uoo04250
+#SBATCH --output         %x_%j.out
+#SBATCH --error          %x_%j.err
+#SBATCH --hint           nomultithread
+
+module purge
+module load psmc
+module load Parallel
+
+# Run bootstraps in parallel starting from round 7
+seq 6 100 | parallel -j $SLURM_CPUS_PER_TASK '
+    if [ ! -f round-{}.psmc ]; then
+        echo "Starting bootstrap replicate {}"
+        psmc -N25 -t15 -r5 -b -p "4+25*2+4+6" \
+             -o round-{}.psmc split2m.psmcfa
+    else
+        echo "Skipping round-{}.psmc (already exists)"
+    fi
+'
+
+# Combine results once bootstraps are finished
+psmc -N25 -t15 -r5 -d -p "4+25*2+4+6" -o skink2m.psmc split2m.psmcfa
+cat skink2m.psmc round-*.psmc > skink_bootstrap.psmc
+
+# Plot results
+psmc_plot.pl -R -u 1.17e-08 -g 6.5 -p skink_bootstrap skink_bootstrap.psmc
+```
 
 
 
