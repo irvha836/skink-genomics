@@ -58,7 +58,9 @@ blastn \
 ```
 
 then looked at coverage and plotted coverage as expected there to be higher coverage due to their being more mitochondria with samtools
-
+```
+samtools depth aln.bam | awk '{sum+=$3} END { print "Average depth = ",sum/NR }'
+```
 ```
 depth <- read.table("depth.txt")
 plot(depth$V2, depth$V3, type="l", xlab="Position", ylab="Depth", main="Coverage across contig_17657")
