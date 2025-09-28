@@ -64,6 +64,7 @@ depth <- read.table("depth.txt")
 plot(depth$V2, depth$V3, type="l", xlab="Position", ylab="Depth", main="Coverage across contig_17657")
 abline(h=260, col="red", lty=2) # average depth
 ```
+<img width="1436" height="952" alt="image" src="https://github.com/user-attachments/assets/f52edef3-f7f4-470e-8b1f-9ca446766f80" />
 then removed start and end of contig 7000bp and 30000bp tail leaving me with 23kb candidate region of high coverage
 ```
 samtools faidx whitakergenome.fasta contig_17657_pilon_pilon:7000-30000 > whitaker_mito_candidate.fasta
@@ -119,9 +120,10 @@ blastn -query mitos_genes.fa \
 
 
 
+# Generating my genbank file
 
-
-# whitaker_mito_to_gb.py
+whitaker_mito_to_gb.py
+```
 from Bio import SeqIO, SeqFeature
 from Bio.SeqRecord import SeqRecord
 from Bio.SeqFeature import SeqFeature, FeatureLocation
@@ -165,3 +167,4 @@ record.features = features
 SeqIO.write(record, output_file, "genbank")
 
 print(f"GenBank file written to {output_file}")
+```
