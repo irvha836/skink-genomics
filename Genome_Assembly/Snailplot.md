@@ -6,3 +6,10 @@ module load Perl
 
 perl pl/asm2stats.minmaxgc.pl /nesi/nobackup/uoo04250/genome_assembly/psmcclean/whitakermasked/whitakergenome.fasta > whitaker_assembly2.minmaxgc.json
 ```
+tagged on repeat content and busco onto 
+
+
+downloaded all the files from the repository onto my own computer 
+updated the HTML file to point to my own json file 
+
+python3 -m http.server 8000
