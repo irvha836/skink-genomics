@@ -24,6 +24,4 @@ python3 -m http.server 8000
 ```
 access plot with this link 
 
-```
 http://localhost:8000/assembly-stats.html
-```
