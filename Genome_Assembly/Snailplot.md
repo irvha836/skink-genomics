@@ -12,4 +12,7 @@ tagged on repeat content and busco onto
 downloaded all the files from the repository onto my own computer 
 updated the HTML file to point to my own json file 
 
+ran this to override chrome loading issues
+```
 python3 -m http.server 8000
+```
