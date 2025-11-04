@@ -1,5 +1,11 @@
-first need all the dependancies for snailpot generation by cloning this GitHub into my directory 
+First needed all the dependencies for snailpot generation by cloning this GitHub into my directory 
 https://github.com/rjchallis/assembly-stats
+
+```
+git clone https://github.com/rjchallis/assembly-stats.git
+cd assembly-stats
+```
+
 
 ```
 module load Perl
@@ -16,7 +22,7 @@ ran this to override chrome loading issues
 ```
 python3 -m http.server 8000
 ```
-plot with this 
+access plot with this link 
 
 ```
 http://localhost:8000/assembly-stats.html
