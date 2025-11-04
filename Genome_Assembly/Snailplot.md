@@ -16,3 +16,8 @@ ran this to override chrome loading issues
 ```
 python3 -m http.server 8000
 ```
+plot with this 
+
+```
+http://localhost:8000/assembly-stats.html
+```
