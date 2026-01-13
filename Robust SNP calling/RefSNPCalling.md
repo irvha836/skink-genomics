@@ -82,6 +82,19 @@ populations -P gstacks_out/ -M popmap.txt \
   -O populations_filteredv2
 ```
 got me 2064 SNPs
+
+so ludo said try again with R 0.65 
+
+```
+mkdir -p populations_filtered2
+populations -P gstacks_out/ \
+-M popmap.txt \
+-O populations_filtered2/ \
+--vcf \
+--max-obs-het 0.6 \
+-R 0.6
+```
+
 ```
 vcftools --vcf populations.snps.vcf \
   --minDP 3 \
