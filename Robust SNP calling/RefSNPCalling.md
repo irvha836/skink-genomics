@@ -211,22 +211,34 @@ Gave me 65451 SNPs!
 
 further investigated missingness and it looks good majority of data is below 50% missingness
 
+```
 module load VCFtools
 vcftools --vcf populations_out/populations.snps.vcf --missing-indv
 ```
 ```
 sort -k 5n out.imiss > out.imiss.sorted
 ```
-then investigate depth filtering and also heterozygosity
+then investigate depth 
 ```
 vcftools --vcf populations.snps.vcf \
   --minDP 3 \
   --recode \
   --out robust_filtered90_minDP3
 ```
-Didnt remove any snps and neither did minDP 4
+Didnt remove any snps and neither did minDP 4 so investigated relationship betweenheterozygosity and depth in R 
 
-
+```
+vcftools --vcf robust_filtered90_minDP3.recode.vcf --het
+```
+```
+vcftools --vcf robust_filtered90_minDP3.recode.vcf --depth
+```
+```
+vcftools --vcf robust_filtered90_minDP4.recode.vcf --het
+```
+```
+vcftools --vcf robust_filtered90_minDP4.recode.vcf --depth
+```
 
 
 
