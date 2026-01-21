@@ -59,13 +59,44 @@ module load VCFtools
 vcftools --vcf populations_out/populations.snps.vcf --missing-indv
 ```
 ```
-sort -k 4n out.imiss > out.imiss.sorted
+sort -k 5n out.imiss > out.imiss.sorted
 ```
 can rerun this without write single snp and max observe het and R
 ```
 populations -P gstacks_out/ -M popmap.txt \
 -O populations_filtered
 ```
+Cut of 90% individuals 
+
+
+Filtered by pop map, not vcf, Cut of individuals missing 90% of the data but keeping admixed individuals and some founders
+(here are individuals i removed)
+D01,F09,D09,C07,C06,C05,D29,F02,F28,F13,F10,D04,F25,DN75,PS44
+
+```
+mkdir -p populations_filtered90jan22
+populations -P gstacks_out/ \
+-M popmap90.txt \
+-O populations_filtered90jan22/ \
+--vcf \
+--max-obs-het 0.6 \
+-R 0.6
+```
+Gave me 65451 SNPs!
+
+max missing 0.9 keep
+max missing 0.99 (Sup) 
+
+
+
+
+
+
+
+
+
+
+
 ```
 mkdir -p populations_filtered2
 populations -P gstacks_out/ \
@@ -161,4 +192,51 @@ General citation for IQ-TREE 2:
 B.Q. Minh, H.A. Schmidt, O. Chernomor, D. Schrempf, M.D. Woodhams, A. von Haeseler, R. Lanfear (2020) IQ-TREE 2: New models and efficient methods for phylogenetic inference in the genomic era. Mol. Biol. Evol., 37:1530-1534. https://doi.org/10.1093/molbev/msaa015
 
 
+# Fresh start for filtering 
 
+Filtered by pop map, not vcf, cut of individuals missing 90% of the data, but keeping admixed individuals and some founders
+(here are individuals i removed)
+D01,F09,D09,C07,C06,C05,D29,F02,F28,F13,F10,D04,F25,DN75,PS44
+
+```
+mkdir -p populations_filtered90jan22
+populations -P gstacks_out/ \
+-M popmap90.txt \
+-O populations_filtered90jan22/ \
+--vcf \
+--max-obs-het 0.6 \
+-R 0.6
+```
+Gave me 65451 SNPs!
+
+further investigated missingness and it looks good majority of data is below 50% missingness
+
+module load VCFtools
+vcftools --vcf populations_out/populations.snps.vcf --missing-indv
+```
+```
+sort -k 5n out.imiss > out.imiss.sorted
+```
+then investigate depth filtering and also heterozygosity
+```
+vcftools --vcf populations.snps.vcf \
+  --minDP 3 \
+  --recode \
+  --out robust_filtered90_minDP3
+```
+Didnt remove any snps and neither did minDP 4
+
+
+
+
+
+Annabell stuff 
+```
+mkdir -p populations_sexesfiltered
+populations -P gstacks_out/ \
+-M popmap_sex_well_sequenced10F9M.txt \
+-O populations_sexesfiltered/ \
+--vcf \
+--max-obs-het 0.6 \
+-R 0.6
+```
