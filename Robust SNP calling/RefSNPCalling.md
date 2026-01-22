@@ -222,16 +222,18 @@ then investigate depth
 ```
 vcftools --vcf populations.snps.vcf \
   --minDP 3 \
+  --max-missing 0.6 \
   --recode \
-  --out robust_filtered90_minDP3
+  --out robust_filtered90_minDP3_maxmiss60
+
 ```
 Didnt remove any snps and neither did minDP 4 so investigated relationship betweenheterozygosity and depth in R 
 
 ```
-vcftools --vcf robust_filtered90_minDP3.recode.vcf --het
+vcftools --vcf robust_filtered90_minDP3_maxmiss60.recode.vcf --het
 ```
 ```
-vcftools --vcf robust_filtered90_minDP3.recode.vcf --depth
+vcftools --vcf robust_filtered90_minDP3_maxmiss60.recode.vcf --depth
 ```
 ```
 vcftools --vcf robust_filtered90_minDP4.recode.vcf --het
