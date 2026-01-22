@@ -162,7 +162,8 @@ cd vcf2phylip
 ```
 module load python
 
-python3 vcf2phylip.py -i robust_filtered_pedigree.recode.vcf -o robust_filtered_pedigree.phy
+python3 vcf2phylip.py -i robust_filtered90_minDP3_maxmiss60.recode.vcf -o robust_90filtered_pedigree.phy
+
 ```
 run IQtree note i also ran without asc model to compare 
 ```
@@ -179,11 +180,11 @@ module load IQ-TREE
 
 # Run IQ-TREE SNP-aware phylogeny
 iqtree2 -nt 16 \
-  -s robust_filtered_pedigree.recode.min4.phy \
+  -s robust_filtered90_minDP3_maxmiss60.recode.min4.phy \
   -m GTR+ASC+G \
   -st DNA \
   -bb 1000 \
-  -pre robust_filtered_snp
+  -pre robust_filtered90_snp
 ```
 
 
@@ -218,7 +219,7 @@ vcftools --vcf populations_out/populations.snps.vcf --missing-indv
 ```
 sort -k 5n out.imiss > out.imiss.sorted
 ```
-then investigate depth 
+Following SNP calling, genotypes with read depth <3 were removed, and loci were retained only if present in at least 60% of individuals. This ensured consistency between genotype- and locus-level filtering criteria. producing 10460 SNPs (Code below)
 ```
 vcftools --vcf populations.snps.vcf \
   --minDP 3 \
@@ -227,7 +228,8 @@ vcftools --vcf populations.snps.vcf \
   --out robust_filtered90_minDP3_maxmiss60
 
 ```
-Didnt remove any snps and neither did minDP 4 so investigated relationship betweenheterozygosity and depth in R 
+
+I then investigated the relationship between heterozygosity and depth in R within my data set and found no correlation between depth and heterozygosity so we have detected true differences
 
 ```
 vcftools --vcf robust_filtered90_minDP3_maxmiss60.recode.vcf --het
@@ -235,12 +237,7 @@ vcftools --vcf robust_filtered90_minDP3_maxmiss60.recode.vcf --het
 ```
 vcftools --vcf robust_filtered90_minDP3_maxmiss60.recode.vcf --depth
 ```
-```
-vcftools --vcf robust_filtered90_minDP4.recode.vcf --het
-```
-```
-vcftools --vcf robust_filtered90_minDP4.recode.vcf --depth
-```
+
 
 
 
