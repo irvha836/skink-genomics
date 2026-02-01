@@ -237,7 +237,29 @@ vcftools --vcf robust_filtered90_minDP3_maxmiss60.recode.vcf --het
 ```
 vcftools --vcf robust_filtered90_minDP3_maxmiss60.recode.vcf --depth
 ```
+Then re-ran IQ tree (ASK LUDO ABOUT invariant sites) 
 
+```
+#!/bin/bash -e
+#SBATCH --account=uoo04250
+#SBATCH --job-name=iqtree_snp
+#SBATCH --output=iqtree_snp.out
+#SBATCH --error=iqtree_snp.err
+#SBATCH --time=24:00:00
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=64G
+
+# Load IQ-TREE module
+module load IQ-TREE
+
+# Run IQ-TREE SNP-aware phylogeny
+iqtree2 -nt 16 \
+  -s robust_filtered90_minDP3_maxmiss60.recode.min4.phy \
+  -m GTR+G \
+  -st DNA \
+  -bb 1000 \
+  -pre robust_filtered_snp
+```
 
 
 
