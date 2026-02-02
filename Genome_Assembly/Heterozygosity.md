@@ -96,8 +96,6 @@ echo "All-sites VCF complete: $VCF"
 
 filter vcf for low quality sites but also keeps monomorphic sites 
 
-```
-
 investgiate depths filters
 
 ```
@@ -105,18 +103,24 @@ module load mosdepth
 mosdepth depth reads.sorted.q20.bam
 
 ```
-
+awk 'NR>1 && $2>=10000 && $6<1000 {sum += $2*$4; len += $2} END {print "Genome-wide mean depth =", sum/len}' depth.mosdepth.summary.txt 
 
 ```
+
+Genome-wide mean depth = 16.757
 module load BCFtools
 
+minimum depth 1/3rd mean depth =6
+maximum depth 2x mean depth =34
+```
 bcftools filter \
-  -e 'DP<5 || DP>60' \
-  /nesi/nobackup/uoo04250/genome_assembly/genome_het_1stfeb/reads.allsites.vcf.gz \
-  -Oz \
-  -o /nesi/nobackup/uoo04250/genome_assembly/genome_het_1stfeb/reads.allsites.DPfiltered.vcf.gz
+-e 'DP<6 || DP>34' \
+/nesi/nobackup/uoo04250/genome_assembly/genome_het_1stfeb/reads.allsites.vcf.gz \
+-Oz \
+-o /nesi/nobackup/uoo04250/genome_assembly/genome_het_1stfeb/reads.allsites.DPfiltered.vcf.gz
 
 bcftools index /nesi/nobackup/uoo04250/genome_assembly/genome_het_1stfeb/reads.allsites.DPfiltered.vcf.gz
+
 ```
 
 
