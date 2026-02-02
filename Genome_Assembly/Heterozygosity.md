@@ -101,6 +101,7 @@ investgiate depths filters
 ```
 module load mosdepth
 mosdepth depth reads.sorted.q20.bam
+```
 
 ```
 awk 'NR>1 && $2>=10000 && $6<1000 {sum += $2*$4; len += $2} END {print "Genome-wide mean depth =", sum/len}' depth.mosdepth.summary.txt 
