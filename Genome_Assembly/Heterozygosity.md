@@ -104,15 +104,15 @@ mosdepth depth reads.sorted.q20.bam
 
 ```
 awk 'NR>1 && $2>=10000 && $6<1000 {sum += $2*$4; len += $2} END {print "Genome-wide mean depth =", sum/len}' depth.mosdepth.summary.txt 
-
 ```
 
 Genome-wide mean depth = 16.757
-module load BCFtools
-
 minimum depth 1/3rd mean depth =6
 maximum depth 2x mean depth =34
+
 ```
+module load BCFtools
+
 bcftools filter \
 -e 'DP<6 || DP>34' \
 /nesi/nobackup/uoo04250/genome_assembly/genome_het_1stfeb/reads.allsites.vcf.gz \
