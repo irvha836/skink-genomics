@@ -1,4 +1,4 @@
-Generate a new popmap with harsh filtering (r80 and max-obs-het-65%)for better estimates, aiming for 300-700 SNPs
+Generate a new popmap with harsh filtering (r80 and max-obs-het-65%)for better estimates, aiming for 300-700 SNPs my castle popmap excluded low coverage individuals C05, C06, C07 and included the legacy sample VUW05
 ```
 mkdir -p castle_population_filtered
 populations -P gstacks_out/ \
@@ -16,3 +16,4 @@ vcftools --vcf populations.snps.vcf \
   --recode \
   --out castle_filtered_minDP5_maxmiss80
 ```
+gave me 169 snps 
