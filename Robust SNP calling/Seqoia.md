@@ -36,6 +36,8 @@ vcftools --vcf populations.snps.vcf \
 ```
 gave me 1111 out of a possible 4110 Sites
 
+mindp4 kept 474 out of a possible 4110 Sites
+
 # Northland individuals
 ```
 populations -P gstacks_out/ \
