@@ -39,6 +39,10 @@ gave me 1111 out of a possible 4110 Sites
 mindp4 kept 474 out of a possible 4110 Sites
 
 # Northland individuals
+
+removed castle and admixed individuals from popmap as well as individuals with more than 90% missing data apart from pedigree important individuals such as F21 & F23 
+(D01, F09, B01, A02, D09, D29, F02, F28, A03, F13, F10, A04, D04, F25, DN75, PS44)
+
 ```
 populations -P gstacks_out/ \
 -M northland_popmap.txt \
