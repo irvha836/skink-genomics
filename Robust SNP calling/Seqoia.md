@@ -44,13 +44,15 @@ populations -P gstacks_out/ \
 --vcf \
 --max-obs-het 0.65 \
 -R 0.8
- 
+```
+```
 vcftools --vcf populations.snps.vcf \
   --minDP 5 \
   --max-missing 0.8 \
   --recode \
   --out northland_filtered_minDP5_maxmiss80
- 
+ ```
+
 Keeping 57 out of 57 individuals. However, this only retained 5 out of 6898 snps.
 
 
