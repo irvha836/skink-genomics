@@ -38,6 +38,11 @@ gave me 1111 out of a possible 4110 Sites
 
 mindp4 kept 474 out of a possible 4110 Sites
 
+to get snp counts 
+```
+bcftools view -H castle_filtered_minDP3_maxmiss80.recode.vcf | wc -l
+```
+
 # Northland individuals
 
 removed castle and admixed individuals from popmap as well as individuals with more than 90% missing data apart from pedigree important individuals such as F21 & F23 
