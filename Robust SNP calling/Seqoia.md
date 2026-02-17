@@ -131,3 +131,125 @@ plink --bfile northlandv2 \
       --out northland_sequoia_v2
 ```
 download raw output file and use for sequoia 
+
+
+
+# Sequoia R
+setwd("~/Downloads")
+
+install.packages("sequoia")
+library(sequoia) 
+library(data.table)
+
+plink_df <- read.table("northland_sequoia_v2.raw", header=TRUE)
+head(plink_df)
+colnames(plink_df)[1:10]
+
+GenoM <- GenoConvert(InFile="northland_sequoia_v2.raw",
+                     InFormat="raw")
+
+
+#Read in the LifeHistData file
+LH <- read.table("LifeHistData.txt", 
+                 header = TRUE,   # your file has column names
+                 sep = "\t",      # tab-delimited
+                 stringsAsFactors = FALSE)  # keep character columns as characters
+
+
+#Read in the PLINK raw file
+plink_df <- read.table("northland_sequoia_v2.raw", header = TRUE)
+
+#Check first few IDs
+head(plink_df$IID)
+
+#Replace IDs starting with "F" or "M" that clash with Sequoia dummy substitutions
+#Example: add "H" prefix instead
+#(I adjust the IDs of F01-F27)
+plink_df$IID <- gsub("^F", "H", plink_df$IID)
+plink_df$IID <- gsub("^M", "H", plink_df$IID)
+
+#Check the new IDs
+head(plink_df$IID)
+
+#Save to a new safe raw file
+write.table(plink_df, "northland_sequoia_v2_safe.raw",
+            quote = FALSE, row.names = FALSE, sep = "\t")
+
+#Now run GenoConvert safely
+GenoM <- GenoConvert(InFile = "northland_sequoia_v2_safe.raw",
+                     InFormat = "raw")
+
+
+plink_df <- read.table("northland_sequoia_v2_safe.raw", header = TRUE)
+plink_df_dt <- as.data.table(plink_df)
+cols_to_convert <- grep("^X", names(plink_df_dt), value = TRUE)  # X = your SNP columns
+plink_df_dt[, (cols_to_convert) := lapply(.SD, as.character), .SDcols = cols_to_convert]
+
+#convert genotypes to seqouia format
+GenoM <- GenoConvert(InFile = plink_df_dt, InFormat = 'raw')
+GenoM.checked <- CheckGeno(GenoM, Return = "GenoM")
+
+LH <- read.table("LifeHistData.txt", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+
+ParOUT <- sequoia(GenoM = GenoM, LifeHistData = LH,
+                  Module="par", Err=0.01, quiet=FALSE, Plot=TRUE)
+ParOUT$DupGenotype  # check for duplicates
+
+IndivMiss <- apply(GenoM, 1, function(x) sum(x == -9) / ncol(GenoM))
+IndivMiss[IndivMiss > 0.8]  # anyone with <20% SNPs
+
+
+SeqOUT <- sequoia(GenoM = GenoM,
+                  LifeHistData = LH,
+                  Module = "ped",   # full pedigree
+                  Err = 0.01)       # SNP genotyping error rate
+
+#Summary of pedigree
+SummarySeq(SeqOUT)
+
+#Check the assigned parents for H21
+SeqOUT$PedigreePar[SeqOUT$PedigreePar$id == "H21", ]
+
+#Check full pedigree (includes dummy parents)
+SeqOUT$Pedigree[SeqOUT$Pedigree$id == "H21", ]
+
+write.csv(SeqOUT$PedigreePar, file = "PedigreeParentage.csv", row.names = FALSE)
+write.csv(SeqOUT$Pedigree, file = "Pedigree_full.csv", row.names = FALSE)
+write.csv(SeqOUT$DummyIDs, file = "Pedigree_dummyIDs.csv", row.names = FALSE)
+
+
+stats <- SnpStats(GenoM, SeqOUT$PedigreePar)
+
+
+Maybe <- GetMaybeRel(
+  GenoM = GenoM,
+  Pedigree = SeqOUT$PedigreePar,
+  LifeHistData = LH,
+  Err = 0.01,
+  Complex = "full",
+  Module = "ped"
+)
+
+#Inspect
+Maybe$MaybeRel
+
+#Save
+write.csv(Maybe$MaybeRel, file = "MaybeRelatives.csv", row.names = FALSE)
+
+
+MaybeM <- GetRelM(Pairs = Maybe$MaybeRel)
+PlotRelPairs(MaybeM)
+
+
+RelM <- GetRelM(Pedigree = SeqOUT$PedigreePar, Pairs = Maybe$MaybeRel)
+PlotRelPairs(RelM)
+
+
+#Pedigree plot including parental assignment
+Rel.sd <- GetRelM(SeqOUT$PedigreePar, patmat = TRUE, GenBack = 2)
+PlotRelPairs(Rel.sd)
+
+#Full pedigree including dummy parents
+Rel.sd2 <- GetRelM(SeqOUT$Pedigree, patmat = TRUE, GenBack = 2)
+PlotRelPairs(Rel.sd2)
+
