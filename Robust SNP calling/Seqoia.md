@@ -68,3 +68,66 @@ Keeping 57 out of 57 individuals. However, this only retained 5 out of 6898 snps
 
 
 Tried again with Mindp3 max-missing 0.8 kept 273 out of a possible 6898 Sites, mindp 2 kept 1283 out of a possible 6898 Sites.
+
+#PLINK
+module load PLINK/1.09b6.16
+
+plink \
+  --vcf northland_filtered_minDP2_maxmiss80.recode.vcf \
+  --allow-extra-chr \
+  --recode A \
+  --out northland
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# New Workflow after talking to Yasmin 
+she recomended no LD purging or maf however since my depth is low and SNPs are not great i decided to go ahead anyway with relaxed paramaters to try get more reliable SNPs to infer the pedigree. 
+```
+vcftools --vcf populations.snps.vcf \
+  --minDP 2 \
+  --maf 0.01 \
+  --max-missing 0.8 \
+  --recode \
+  --out northland_filtered_maf001_mm80_mindp2
+```
+After filtering, kept 1189 out of a possible 6898 Sites
+Run Time = 0.00 seconds
+
+```
+module load PLINK/1.09b6.16
+
+plink --vcf northland_filtered_maf001_mm80_mindp2.recode.vcf  \
+  --allow-extra-chr \
+  --make-bed \
+  --out northlandv2
+```
+prune for linkage disequilibruim relaxed (r2=0.3) 
+```
+plink --bfile northland \
+      --allow-extra-chr \
+      --indep-pairwise 50 5 0.3 \
+      --out northland_pruned
+```
+885 SNPs left after LD pruning
+
+extract pruned SNPs for seqoia 
+```
+plink --bfile northlandv2 \
+      --allow-extra-chr \
+      --extract northland_prunedv2.prune.in \
+      --recode A \
+      --out northland_sequoia_v2
+```
+download raw output file and use for sequoia 
