@@ -299,3 +299,4 @@ vcftools --vcf populations.snps.vcf \
   --recode \
   --out robust_filtered90_minDP3_maxmiss60_single
 ```
+kept 4791 SNPs
