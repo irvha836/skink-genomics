@@ -273,3 +273,29 @@ populations -P gstacks_out/ \
 --max-obs-het 0.6 \
 -R 0.6
 ```
+
+
+
+
+
+# FST 
+more stringent filtering for FST calculations
+```
+populations -P gstacks_out/ \
+  -M popmap90.txt \
+  -O populations_singleSNP/ \
+  --vcf \
+  --write-single-snp \
+  -R 0.6 \
+  --max-obs-het 0.6
+```
+32881 variant sites remained
+
+keep filtering apart from single SNP consistent 
+```
+vcftools --vcf populations.snps.vcf \
+  --minDP 3 \
+  --max-missing 0.6 \
+  --recode \
+  --out robust_filtered90_minDP3_maxmiss60_single
+```
