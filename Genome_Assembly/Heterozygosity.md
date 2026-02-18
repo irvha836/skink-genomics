@@ -251,4 +251,4 @@ Contigs <10 kb excluded to avoid tiny, noisy windows
 
 Window size / step size can be adjusted depending on genome size and resolution needed
 
-code adapted from sebastian and from  https://www.science.org/doi/full/10.1126/sciadv.aau0757
+code adapted from sebastian and from  https://www.science.org/doi/full/10.1126/sciadv.aau0757 
