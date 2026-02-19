@@ -278,18 +278,18 @@ populations -P gstacks_out/ \
 
 
 
-# FST 
-more stringent filtering for FST calculations
+# FST SNP calling 
+more stringent filtering for FST calculations (excluded individuals with more than 90% missing data and andmixed individuals) 
 ```
 populations -P gstacks_out/ \
-  -M popmap90.txt \
+  -M popmapFST.txt \
   -O populations_singleSNP/ \
   --vcf \
   --write-single-snp \
   -R 0.6 \
   --max-obs-het 0.6
 ```
-32881 variant sites remained
+37075 variant sites remained
 
 keep filtering apart from single SNP consistent 
 ```
@@ -299,4 +299,60 @@ vcftools --vcf populations.snps.vcf \
   --recode \
   --out robust_filtered90_minDP3_maxmiss60_single
 ```
-kept 4791 SNPs
+kept 7128 SNPs
+
+# FST 
+
+generate subpopulations and check totals match 
+```
+bcftools query -l robust_filtered90_minDP3_maxmiss60_single.recode.vcf > samples_clean.txt
+
+# Castle (C*)
+grep -E '^C' samples_clean.txt > castle.txt
+
+# Legacy (VUW*)
+grep -E '^V' samples_clean.txt > legacy.txt
+
+# Northland (everything else)
+grep -Ev '^(C|V)' samples_clean.txt > northland.txt
+
+wc -l castle.txt legacy.txt northland.txt
+```
+pairwise FST 
+```
+vcftools --vcf robust_filtered90_minDP3_maxmiss60_single.recode.vcf \
+  --weir-fst-pop castle.txt \
+  --weir-fst-pop northland.txt \
+  --out fst_castle_northland 2>&1 | tee fst_castle_northland.log
+
+vcftools --vcf robust_filtered90_minDP3_maxmiss60_single.recode.vcf \
+  --weir-fst-pop castle.txt \
+  --weir-fst-pop legacy.txt \
+  --out fst_castle_legacy 2>&1 | tee fst_castle_legacy.log
+
+vcftools --vcf robust_filtered90_minDP3_maxmiss60_single.recode.vcf \
+  --weir-fst-pop northland.txt \
+  --weir-fst-pop legacy.txt \
+  --out fst_northland_legacy 2>&1 | tee fst_northland_legacy.log
+```
+
+pull FST estimates
+```
+grep -H "weighted Fst estimate" fst_*.log
+```
+Estimates very high so likely subspecies split between coromandel and Northland. or strong drift within captive populations
+fst_castle_legacy.log:Weir and Cockerham weighted Fst estimate: 0.20923
+fst_castle_northland.log:Weir and Cockerham weighted Fst estimate: 0.6875
+fst_northland_legacy.log:Weir and Cockerham weighted Fst estimate: 0.52815
+
+
+
+
+should probably run with as more strict and will remove individuals E04, G01, D31, F03, F12, F17, G02, F23, F21 which arent crucial for this analysis as arent limited castle samples
+```
+vcftools --vcf populations_singleSNP/populations.snps.vcf \
+  --minDP 3 \
+  --max-missing 0.8 \
+  --recode \
+  --out robust_singleSNP_minDP3_maxmiss80
+```
