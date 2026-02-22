@@ -132,6 +132,20 @@ plink --bfile northlandv2 \
 ```
 download raw output file and use for sequoia 
 
+# NO LD 
+```
+plink --vcf northland_filtered_maf001_mm80_mindp2.recode.vcf  \
+  --allow-extra-chr \
+  --make-bed \
+  --out northland_no_LD
+```
+```
+plink --bfile northland_no_LD \
+ --allow-extra-chr \
+ --recode A  \
+ --out northland_no_LD_sequoia
+```
+retained 1189 variant sites.
 
 
 # Sequoia R
