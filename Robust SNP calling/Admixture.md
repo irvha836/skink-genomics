@@ -45,7 +45,7 @@ bfile robust_admix_captive \
 ```
 
 ```
-plink2 --bfile robust_admix_captive \
+plink --bfile robust_admix_captive \
   --allow-extra-chr \
   --extract robust_captive_LD.prune.in \
   --make-bed \
