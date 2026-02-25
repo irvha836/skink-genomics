@@ -364,7 +364,7 @@ vcftools --vcf populations_singleSNP/populations.snps.vcf \
 
 
 
-removed 80% missing individuals 
+removed 80% missing individuals N=57
 ```
 populations -P gstacks_out/ \
   -M popmapFST80.txt \
@@ -374,3 +374,16 @@ populations -P gstacks_out/ \
   -R 0.6 \
   --max-obs-het 0.6
 ```
+41785 remaining 
+```
+vcftools --vcf populations.snps.vcf \
+  --minDP 3 \
+  --max-missing 0.6 \
+  --recode \
+  --out robust_filtered90_minDP3_maxmiss60_single
+```
+retained 12460 SNPs
+
+fst_castle_legacy.log:Weir and Cockerham weighted Fst estimate: 0.2717
+fst_castle_northland.log:Weir and Cockerham weighted Fst estimate: 0.67883
+fst_northland_legacy.log:Weir and Cockerham weighted Fst estimate: 0.60036
