@@ -356,3 +356,21 @@ vcftools --vcf populations_singleSNP/populations.snps.vcf \
   --recode \
   --out robust_singleSNP_minDP3_maxmiss80
 ```
+
+
+
+
+
+
+
+
+removed 80% missing individuals 
+```
+populations -P gstacks_out/ \
+  -M popmapFST80.txt \
+  -O populations_singleSNP/ \
+  --vcf \
+  --write-single-snp \
+  -R 0.6 \
+  --max-obs-het 0.6
+```
