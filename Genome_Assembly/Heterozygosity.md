@@ -1,8 +1,5 @@
 Calculating genome wide heterozygosity with masked genome aligning q20 reads with a minimum length of 1000 bp
 
-```
-
-
 mpileup step to generate variant sites (all-sites VCF)
 
 ```
