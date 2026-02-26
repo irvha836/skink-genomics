@@ -1,7 +1,3 @@
-use transition/transversion ratio of 2.0 from https://academic.oup.com/g3journal/article/12/2/jkab402/6433156 if bam fails. 
-
-
-
 Calculating genome wide heterozygosity with masked genome aligning q20 reads with a minimum length of 1000 bp
 
 ```
@@ -55,7 +51,7 @@ bcftools index $VCF
 echo "All-sites VCF complete: $VCF"
 ```
 
-filter vcf for low quality sites but also keeps monomorphic sites 
+filter vcf for low quality sites, but also keeps monomorphic sites 
 
 investgiate depths filters
 
@@ -84,9 +80,6 @@ bcftools filter \
 bcftools index /nesi/nobackup/uoo04250/genome_assembly/genome_het_1stfeb/reads.allsites.DPfiltered.vcf.gz
 
 ```
-
-
-
 
 generate contig lengths for per window/contig heterozygosity caluclations 
 ```
