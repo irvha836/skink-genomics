@@ -198,7 +198,7 @@ awk '$2>=10000 {print $1 "\t" $2}' \
 echo "Filtering and contig length generation complete."
 ```
 
-generate genome wide heterozygosity by calculating it per contig
+generate genome-wide heterozygosity by calculating it per contig with python script
 ```
 #!/bin/bash -e
 #SBATCH --job-name=gwh_allcontigs
