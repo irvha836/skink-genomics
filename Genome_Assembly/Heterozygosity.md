@@ -89,7 +89,7 @@ cut -f1,2 \
 
 
 
-** Streamlined Pipeline **
+**Streamlined Pipeline**
 
 index and align q20 reads with minimum 1k bp in length to hardmasekd genome
 ```
