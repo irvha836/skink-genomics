@@ -45,6 +45,7 @@ diamond blastx \
 # Q20 Coverage 
 reads were first filtered using nanofilt for q20 and aligned to the genome 
 
+```
 #!/bin/bash -e
 #SBATCH --job-name=whitakers_ont_map
 #SBATCH --cpus-per-task=32
@@ -79,3 +80,4 @@ samtools flagstat $BAM > $OUTDIR/mapping_stats.txt
 
 # Depth file (per-base depth)
 samtools depth -aa $BAM > $OUTDIR/depth_per_base.txt
+```
