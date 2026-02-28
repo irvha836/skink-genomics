@@ -81,3 +81,63 @@ samtools flagstat $BAM > $OUTDIR/mapping_stats.txt
 # Depth file (per-base depth)
 samtools depth -aa $BAM > $OUTDIR/depth_per_base.txt
 ```
+
+calculate depth in 100kb windows
+
+```
+#!/bin/bash -e
+#SBATCH --job-name=whit_cov100kb
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=40G
+#SBATCH --time=04:00:00
+#SBATCH --account=uoo04250
+#SBATCH --output=%x_%j.out
+#SBATCH --error=%x_%j.err
+#SBATCH --hint=nomultithread
+
+module purge
+module load SAMtools/1.19-GCC-12.3.0
+module load BEDTools/2.31.1-GCC-12.3.0
+
+GENOME=/nesi/nobackup/uoo04250/ref_snps/whitakergenome.fasta
+BAM=/nesi/nobackup/uoo04250/ref_snps/coverage_q20/whitakers_q20_mapped.bam
+OUTDIR=/nesi/nobackup/uoo04250/ref_snps/coverage_q20
+
+W=100000
+
+mkdir -p "$OUTDIR"
+
+# Ensure fasta index exists
+if [ ! -s "${GENOME}.fai" ]; then
+  samtools faidx "$GENOME"
+fi
+
+# Genome sizes file
+cut -f1,2 "${GENOME}.fai" > "$OUTDIR/genome.sizes"
+
+# Make windows
+bedtools makewindows -g "$OUTDIR/genome.sizes" -w $W > "$OUTDIR/windows_${W}.bed"
+
+# Mean depth per window (last column is mean depth)
+bedtools coverage -a "$OUTDIR/windows_${W}.bed" -b "$BAM" -mean > "$OUTDIR/coverage_${W}_mean.txt"
+
+# Summary stats
+echo "### Coverage summary (window=${W} bp)" > "$OUTDIR/coverage_${W}_summary.txt"
+
+awk '{sum+=$NF; n++} END {print "mean_depth\t" sum/n "\nwindows\t" n}' \
+  "$OUTDIR/coverage_${W}_mean.txt" >> "$OUTDIR/coverage_${W}_summary.txt"
+
+awk '{print $NF}' "$OUTDIR/coverage_${W}_mean.txt" | sort -n | \
+  awk '{a[NR]=$1} END {print "median_depth\t" a[int((NR+1)/2)]}' \
+  >> "$OUTDIR/coverage_${W}_summary.txt"
+
+awk '$NF < 1 {c++} END {print "windows_mean_depth_lt_1x\t" c}' \
+  "$OUTDIR/coverage_${W}_mean.txt" >> "$OUTDIR/coverage_${W}_summary.txt"
+
+awk '$NF == 0 {c++} END {print "windows_zero_depth\t" c}' \
+  "$OUTDIR/coverage_${W}_mean.txt" >> "$OUTDIR/coverage_${W}_summary.txt"
+
+echo "Wrote:"
+echo " - $OUTDIR/coverage_${W}_mean.txt"
+echo " - $OUTDIR/coverage_${W}_summary.txt"
+```
