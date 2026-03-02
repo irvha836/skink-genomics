@@ -387,3 +387,37 @@ retained 12460 SNPs
 fst_castle_legacy.log:Weir and Cockerham weighted Fst estimate: 0.2717
 fst_castle_northland.log:Weir and Cockerham weighted Fst estimate: 0.67883
 fst_northland_legacy.log:Weir and Cockerham weighted Fst estimate: 0.60036
+
+
+
+
+
+
+
+# PCA
+same snp file for others used 
+```
+module load PLINK/1.09b6.16
+plink \
+  --vcf robust_filtered90_minDP3_maxmiss60PCA.recode.vcf \
+  --allow-extra-chr \
+  --make-bed \
+  --out robust_forLD
+```
+
+```
+plink \
+  --bfile robust_forLD \
+  --allow-extra-chr \
+  --indep-pairwise 50 10 0.2 \
+  --out robust_pruned
+```
+```
+plink \
+  --bfile robust_forLD \
+  --allow-extra-chr \
+  --extract robust_pruned.prune.in \
+  --make-bed \
+  --out robust_LDpruned
+```
+Generated robust_PCA.eigenval and robust_PCA.eigenvec for plotting. 
