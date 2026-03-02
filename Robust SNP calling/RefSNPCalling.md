@@ -420,4 +420,5 @@ plink \
   --make-bed \
   --out robust_LDpruned
 ```
+3881 SNPS for analysis
 Generated robust_PCA.eigenval and robust_PCA.eigenvec for plotting. 
