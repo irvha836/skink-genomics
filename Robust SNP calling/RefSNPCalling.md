@@ -384,9 +384,9 @@ vcftools --vcf populations.snps.vcf \
 ```
 retained 12460 SNPs
 
-fst_castle_legacy.log:Weir and Cockerham weighted Fst estimate: 0.2717
-fst_castle_northland.log:Weir and Cockerham weighted Fst estimate: 0.67883
-fst_northland_legacy.log:Weir and Cockerham weighted Fst estimate: 0.60036
+fst_castle_legacyv2.log:Weir and Cockerham weighted Fst estimate: 0.2717
+fst_castle_northlandv2.log:Weir and Cockerham weighted Fst estimate: 0.70013
+fst_northland_legacyv2.log:Weir and Cockerham weighted Fst estimate: 0.61713
 
 
 
