@@ -364,7 +364,7 @@ vcftools --vcf populations_singleSNP/populations.snps.vcf \
 
 
 
-removed 80% missing individuals N=57
+removed 80% missing individuals and additional admixed individuals based on admixture plot and figtree and pedigree N=49
 ```
 populations -P gstacks_out/ \
   -M popmapFST80.txt \
