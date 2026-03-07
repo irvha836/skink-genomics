@@ -8,3 +8,12 @@ populations -P gstacks_out/ \
 --max-obs-het 0.65 \
 -R 0.8
 ```
+4977 sites remained / 17910 sites 
+```
+vcftools --vcf populations.snps.vcf \
+  --minDP 2 \
+  --maf 0.01 \
+  --max-missing 0.8 \
+  --recode \
+  --out northland_filteredtrio_maf001_mm80_mindp2
+```
