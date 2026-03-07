@@ -6,9 +6,9 @@ populations -P gstacks_out/ \
 -O TrioML/ \
 --vcf \
 --max-obs-het 0.65 \
--R 0.8
+-R 0.7
 ```
-4977 sites remained / 17910 sites 
+19549 sites remained / 54536 sites 
 ```
 vcftools --vcf populations.snps.vcf \
   --minDP 2 \
