@@ -17,3 +17,4 @@ vcftools --vcf populations.snps.vcf \
   --recode \
   --out northland_filteredtrio_maf001_mm80_mindp2
 ```
+974 SNPs out of 19549 remained
