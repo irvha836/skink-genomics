@@ -171,3 +171,54 @@ SeqIO.write(record, output_file, "genbank")
 
 print(f"GenBank file written to {output_file}")
 ```
+
+
+# Coverage 
+
+align Q20 reads back to mitogenome fasta file to produce summary statistics of read depth
+```
+#!/bin/bash -e
+#SBATCH --job-name=mito_cov
+#SBATCH --account=uoo04250
+#SBATCH --time=24:00:00
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
+#SBATCH --output=mito_cov_%j.out
+#SBATCH --error=mito_cov_%j.err
+
+module --force purge
+module load NeSI
+module load minimap2/2.28-GCC-12.3.0
+module load SAMtools/1.22-GCC-12.3.0
+
+REF="whitaker_mitogenomenew.fasta"
+READS="reads_q20_l1kv2.fastq.gz"
+PREFIX="whitaker_mitonewcoverage"
+
+minimap2 -ax map-ont -t ${SLURM_CPUS_PER_TASK} "$REF" "$READS" | \
+    samtools sort -@ ${SLURM_CPUS_PER_TASK} -o ${PREFIX}.sorted.bam
+
+samtools index ${PREFIX}.sorted.bam
+samtools depth -a ${PREFIX}.sorted.bam > ${PREFIX}.depth.txt
+
+awk '{sum+=$3; n++} END {print "Mean_coverage\t" sum/n}' ${PREFIX}.depth.txt > ${PREFIX}.coverage_stats.txt
+
+awk 'NR==1{min=$3; max=$3}
+     {if($3<min) min=$3; if($3>max) max=$3}
+     END {print "Min_coverage\t" min "\nMax_coverage\t" max}' \
+     ${PREFIX}.depth.txt >> ${PREFIX}.coverage_stats.txt
+
+awk '$3>=1{a++} $3>=10{b++} $3>=20{c++} {n++}
+     END {
+       print "Pct_bases_>=1x\t" 100*a/n
+       print "Pct_bases_>=10x\t" 100*b/n
+       print "Pct_bases_>=20x\t" 100*c/n
+     }' ${PREFIX}.depth.txt >> ${PREFIX}.coverage_stats.txt
+```
+
+Mean_coverage	527.1
+Min_coverage	79
+Max_coverage	693
+Pct_bases_>=1x	100
+Pct_bases_>=10x	100
+Pct_bases_>=20x	100
