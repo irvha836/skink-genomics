@@ -1,21 +1,3 @@
-# robust-skink-sex-
-## radsex stuff 
+# Genome assembly and population genomics Harrison Foor MSc
 
-List:
-
-[google](www.google.com) 
-
-**This is bold text** 
-*this is italic text* 
-
-''' 
-this is code 
-
-<!--this is not code-->
-
-
-need to sync desktop version and web version 
-
-download r markdown
-
-can just work directly on web
+Here is the GitHub used to assemble the Whitaker's skink genome and perform genomic analysis on the captive robust skink population. 
