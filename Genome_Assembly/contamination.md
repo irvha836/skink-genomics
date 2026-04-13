@@ -141,3 +141,86 @@ echo "Wrote:"
 echo " - $OUTDIR/coverage_${W}_mean.txt"
 echo " - $OUTDIR/coverage_${W}_summary.txt"
 ```
+
+```
+#!/bin/bash -e
+#SBATCH --job-name=whit_cov100kb
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=16G
+#SBATCH --time=04:00:00
+#SBATCH --account=uoo04250
+#SBATCH --output=%x_%j.out
+#SBATCH --error=%x_%j.err
+#SBATCH --hint=nomultithread
+
+module purge
+module load mosdepth/0.3.4-GCC-11.3.0
+module load SAMtools/1.16.1-GCC-11.3.0
+
+BAM=/nesi/nobackup/uoo04250/ref_snps/coverage_q20/whitakers_q20_mapped.bam
+OUTDIR=/nesi/nobackup/uoo04250/ref_snps/coverage_q20/mosdepth_100kb
+PREFIX=$OUTDIR/whitakers_q20
+
+mkdir -p "$OUTDIR"
+
+samtools index -@ $SLURM_CPUS_PER_TASK "$BAM"
+
+mosdepth \
+  --threads $SLURM_CPUS_PER_TASK \
+  --by 100000 \
+  --no-per-base \
+  --flag 2304 \
+  "$PREFIX" "$BAM"
+```
+
+
+# mitogenome coverage 
+
+```
+#!/bin/bash -e
+#SBATCH --job-name=mito_cov
+#SBATCH --account=uoo04250
+#SBATCH --time=24:00:00
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
+#SBATCH --output=mito_cov_%j.out
+#SBATCH --error=mito_cov_%j.err
+
+module purge
+module load minimap2
+module load SAMtools
+module load mosdepth
+
+# ---- input files
+REF="whitaker_mitogenomenew.fasta"
+READS="reads_q20_l1kv2.fastq.gz"
+PREFIX="whitaker_mitonewcoverage"
+
+# ---- map ONT reads to mitogenome
+minimap2 -ax map-ont -t ${SLURM_CPUS_PER_TASK} "$REF" "$READS" | \
+    samtools sort -@ ${SLURM_CPUS_PER_TASK} -o ${PREFIX}.sorted.bam
+
+# ---- index bam
+samtools index ${PREFIX}.sorted.bam
+
+# ---- per-base depth with samtools
+samtools depth -a ${PREFIX}.sorted.bam > ${PREFIX}.depth.txt
+
+# ---- summary stats from depth file
+awk '{sum+=$3; n++} END {print "Mean_coverage\t" sum/n}' ${PREFIX}.depth.txt > ${PREFIX}.coverage_stats.txt
+
+awk 'NR==1{min=$3; max=$3}
+     {if($3<min) min=$3; if($3>max) max=$3}
+     END {print "Min_coverage\t" min "\nMax_coverage\t" max}' \
+     ${PREFIX}.depth.txt >> ${PREFIX}.coverage_stats.txt
+
+awk '$3>=1{a++} $3>=10{b++} $3>=20{c++} {n++}
+     END {
+       print "Pct_bases_>=1x\t" 100*a/n
+       print "Pct_bases_>=10x\t" 100*b/n
+       print "Pct_bases_>=20x\t" 100*c/n
+     }' ${PREFIX}.depth.txt >> ${PREFIX}.coverage_stats.txt
+
+# ---- mosdepth output too
+mosdepth -t ${SLURM_CPUS_PER_TASK} ${PREFIX} ${PREFIX}.sorted.bam
+```
