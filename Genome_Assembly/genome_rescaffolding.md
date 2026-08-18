@@ -138,6 +138,7 @@ then get additional file and make it executable
 ```
 wget https://github.com/Benson-Genomics-Lab/TRF/releases/download/v4.09.1/trf409.linux64
 ```
+```
 mkdir -p ~/bin
 mv trf409.linux64 ~/bin/trf
 chmod +x ~/bin/trf
